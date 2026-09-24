@@ -13,21 +13,21 @@
 <meta property="og:site_name" content="past">
 <meta property="og:description" content="Lab: SQL注入  使用portswigger靶场：  第一题:一个简单的get字符型SQL注入: 打开靶场发现是一个购物网站  这时候发现有几个可以用于分类的按钮，随便点一个:  可以发现只剩下被筛选的商品，但是url那里出现了 filter?category&#x3D;Gifts 这样一个疑是sql注入入口的网址 我们尝试在Gifts后面加上 &#39;  发现似乎能购控制筛选结果，基本可以确定SQL入口在">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png">
-<meta property="og:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png">
-<meta property="article:published_time" content="2026-09-24T15:40:12.586Z">
-<meta property="article:modified_time" content="2026-09-24T16:17:43.394Z">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png">
+<meta property="article:published_time" content="2026-09-24T14:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-24T16:22:15.434Z">
 <meta property="article:author" content="past">
 <meta property="article:tag" content="SQL">
 <meta property="article:tag" content="Web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xiafujian.github.io/2026/09/24/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg">
+<meta name="twitter:image" content="https://xiafujian.github.io/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="past" type="application/atom+xml">
   
@@ -91,7 +91,7 @@
         <section id="main"><article id="post-sql1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/09/24/sql1/" class="article-date">
-  <time class="dt-published" datetime="2026-09-24T15:40:12.586Z" itemprop="datePublished">2026-09-24</time>
+  <time class="dt-published" datetime="2026-09-24T14:00:00.000Z" itemprop="datePublished">2026-09-24</time>
 </a>
     
   <div class="article-category">
@@ -120,33 +120,33 @@
 </ul>
 <p><strong>第一题:一个简单的get字符型SQL注入:</strong><br>
 打开靶场发现是一个购物网站<br><br><br></p>
-<p><img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg" alt=""><br><br><br></p>
+<p><img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg" alt=""><br><br><br></p>
 <p>这时候发现有几个可以用于分类的按钮，随便点一个:<br>
-<img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png" alt=""><br><br><br><br>
+<img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png" alt=""><br><br><br><br>
 可以发现只剩下被筛选的商品，但是url那里出现了<br>
 <mark>filter?category=Gifts</mark><br>
 这样一个疑是sql注入入口的网址<br>
 我们尝试在Gifts后面加上 <mark>'</mark><br>
-<img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png" alt=""><br>
+<img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png" alt=""><br>
 发现似乎能购控制筛选结果，基本可以确定SQL入口在这里</p>
 <p>构造payload: <mark>filter?category=Gifts' OR 1=1--+</mark><br>
 (+号也可以换成空格，我这里为了更直观的展示，使用+号)<br>
-<img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png" alt=""><br>
+<img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png" alt=""><br>
 <br><br><br>
 可以发现在选择筛选结果的情况下，依旧能够显示所有的商品，这样就完成了这个靶场的要求<br>
 <br><br><br><br><br>
 <strong>第二题:登入绕过SQL注入</strong><br>
 打开靶场，没有出现筛选选项，但是注意到右上角有账号登入入口<br>
-<img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png" alt=""><br><br><br>
+<img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png" alt=""><br><br><br>
 点击后出现登入框<br><br><br>
-<img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png" alt=""><br>
+<img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png" alt=""><br>
 从靶场提示中可以拿到一个用户名&quot;administrator&quot;<br>
-<img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png" alt=""><br>
+<img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png" alt=""><br>
 按照知识点的提示，可以知道这题需要尝试使用SQL注入实现任意密码登入<br>
 先构造  &quot;administrator'--+&quot;<br>
 可以猜想&quot; --+ &quot;可以将password前面的  ' 给注释掉，说不定能使--+后面全部内容被数据库忽略，密码判断直接失效，<br>
 直接尝试，发现成功实现无密码登入<br>
-<img src="../image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png" alt=""><br>
+<img src="/image/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png" alt=""><br>
 成功完成靶场要求  😐<br>
 <br><br><br><br><br>
 在文档中还发现自己的一个知识点盲区(数据库还有分成四种)</p>
@@ -181,7 +181,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://xiafujian.github.io/2026/09/24/sql1/" data-id="cuid2n1TkTRRL9QW6vLwuyL1Q" data-title="第一次sql注入的学习(portswigger)" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://xiafujian.github.io/2026/09/24/sql1/" data-id="cuidtIs_z61n8-wmPIpJn2Ney" data-title="第一次sql注入的学习(portswigger)" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
