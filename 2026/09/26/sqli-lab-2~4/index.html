@@ -6,12 +6,12 @@
   
   <title>sqli-lab-sql2~4的wp | past</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="sql-lab-2~4  使用sqli-lab靶场  这是我完成第二，三，四题的wp  第一题: 依旧是打开靶场，构造?id&#x3D;1  结果显示正常，大概率和上面一题一样，是?id&#x3D;后面是注入点 构造?id&#x3D;1&#39; and 1&#x3D;2 --+ 查看返回  发现报错:  &#39;and 1&#x3D;2 --+  都有问题 猜想是否是因为语句外面没有 &#39; 号，我输入的 &#39; 成为了报错原因 于是尝试构造?id&#x3D;1 and 1&#x3D;">
+  <meta name="description" content="sql-lab-2~4  使用sqli-lab靶场  这是我完成第二，三，四题的wp  第二题: 依旧是打开靶场，构造?id&#x3D;1  结果显示正常，大概率和上面一题一样，是?id&#x3D;后面是注入点 构造?id&#x3D;1&#39; and 1&#x3D;2 --+ 查看返回  发现报错:  &#39;and 1&#x3D;2 --+  都有问题 猜想是否是因为语句外面没有 &#39; 号，我输入的 &#39; 成为了报错原因 于是尝试构造?id&#x3D;1 and 1&#x3D;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sqli-lab-sql2~4的wp">
 <meta property="og:url" content="https://xiafujian.github.io/2026/09/26/sqli-lab-2~4/index.html">
 <meta property="og:site_name" content="past">
-<meta property="og:description" content="sql-lab-2~4  使用sqli-lab靶场  这是我完成第二，三，四题的wp  第一题: 依旧是打开靶场，构造?id&#x3D;1  结果显示正常，大概率和上面一题一样，是?id&#x3D;后面是注入点 构造?id&#x3D;1&#39; and 1&#x3D;2 --+ 查看返回  发现报错:  &#39;and 1&#x3D;2 --+  都有问题 猜想是否是因为语句外面没有 &#39; 号，我输入的 &#39; 成为了报错原因 于是尝试构造?id&#x3D;1 and 1&#x3D;">
+<meta property="og:description" content="sql-lab-2~4  使用sqli-lab靶场  这是我完成第二，三，四题的wp  第二题: 依旧是打开靶场，构造?id&#x3D;1  结果显示正常，大概率和上面一题一样，是?id&#x3D;后面是注入点 构造?id&#x3D;1&#39; and 1&#x3D;2 --+ 查看返回  发现报错:  &#39;and 1&#x3D;2 --+  都有问题 猜想是否是因为语句外面没有 &#39; 号，我输入的 &#39; 成为了报错原因 于是尝试构造?id&#x3D;1 and 1&#x3D;">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-2~4/951720850e0c3e7b1881a789928405b9.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-2~4/f7b3d5bf353a66c982bb51418b27c43b.png">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-2~4/638eefe59e5c956fe96414dbb82b27d8.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-2~4/b28260b157fc94cd0785a9d5a015a27f.png">
 <meta property="article:published_time" content="2026-09-26T08:58:55.297Z">
-<meta property="article:modified_time" content="2026-09-26T11:02:09.865Z">
+<meta property="article:modified_time" content="2026-09-27T10:06:30.186Z">
 <meta property="article:author" content="past">
 <meta property="article:tag" content="SQL">
 <meta property="article:tag" content="Web">
@@ -122,7 +122,7 @@
 </ul>
 <p><strong>这是我完成第二，三，四题的wp</strong><br>
 <br><br>
-<strong>第一题:</strong><br>
+<strong>第二题:</strong><br>
 依旧是打开靶场，构造?id=1</p>
 <p><img src="/image/sqli-lab-2~4/951720850e0c3e7b1881a789928405b9.png" alt="alt text"></p>
 <p>结果显示正常，大概率和上面一题一样，是?id=后面是注入点<br>
@@ -134,41 +134,41 @@
 于是尝试构造?id=1 and 1=2</p>
 <p><img src="/image/sqli-lab-2~4/8f288018d1eea9196167ca05f5fd7756.png" alt="alt text"></p>
 <p>发现因为1=2条件不成立而不显示结果了，所以我的猜测是正确的<br>
-去翻阅源代码<br>
-<img src="/image/sqli-lab-2~4/2609bc91e63d37295b3d95e590c3df1f.png" alt="alt text"><br>
-有这样的一句话:<code>$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;;</code><br>
+去翻阅源代码</p>
+<p><img src="/image/sqli-lab-2~4/2609bc91e63d37295b3d95e590c3df1f.png" alt="alt text"></p>
+<p>有这样的一句话:<code>$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;;</code><br>
 发现我输入的id左右确实没有<code>'</code>闭合<br>
 接下来就和第一题步骤一样，注意不用添加<code>'</code>和<code>--+</code>就好了<br>
 <br><br><br><br>
 <strong>第二题:</strong><br>
 首先依旧是构造?id=1，结果正常显示<br>
-然后先尝试<code>?id=1'</code><br>
-<img src="/image/sqli-lab-2~4/cc4509f5010fc74392189e9f71106b80.png" alt="alt text"><br>
-发现报错，但是报错的地方是:<code>'1'') limit 0,1</code><br>
+然后先尝试<code>?id=1'</code></p>
+<p><img src="/image/sqli-lab-2~4/cc4509f5010fc74392189e9f71106b80.png" alt="alt text"></p>
+<p>发现报错，但是报错的地方是:<code>'1'') limit 0,1</code><br>
 可以猜测一下我输入的id是被<code>('id')</code>闭合，这样错误的地方才会在<code>')</code>这里<br>
-所以构造:<code>?id=1') and 1=2 --+</code><br>
-<img src="/image/sqli-lab-2~4/36383c9a99c9eee15b9b71bc302c9019.png" alt="alt text"><br>
-结果确实因为1=2而不显示，我的猜测是正确的<br>
+所以构造:<code>?id=1') and 1=2 --+</code></p>
+<p><img src="/image/sqli-lab-2~4/36383c9a99c9eee15b9b71bc302c9019.png" alt="alt text"></p>
+<p>结果确实因为1=2而不显示，我的猜测是正确的<br>
 查看一下源代码:<code>$sql=&quot;SELECT * FROM users WHERE id=('$id') LIMIT 0,1&quot;;</code><br>
 发现id确实是被<code>('id')</code>闭合</p>
 <p>接下来也和第一题一样，只是要把<code>'</code>改为<code>')</code>，即可得到账号密码<br>
 <br><br><br><br>
 <strong>第四题</strong><br>
-依旧是先尝试?id=1'，但是这次发现居然没有回显<br>
-<img src="../image/sqli-lab-2~4/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-26%20185236.png" alt="alt text"><br>
-只好尝试一下其他常见的闭合符号<code>&quot;``%</code>等<br>
-在尝试<code>&quot;</code>后(?id=1&quot;)<br>
-<img src="/image/sqli-lab-2~4/4198706c9fba5cd32d0299808c1620e6.png" alt="alt text"><br>
-发现页面报错，观察一下报错结果:<br>
+依旧是先尝试?id=1'，但是这次发现居然没有回显</p>
+<p><img src="../image/sqli-lab-2~4/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-26%20185236.png" alt="alt text"></p>
+<p>只好尝试一下其他常见的闭合符号<code>&quot;``%</code>等<br>
+在尝试<code>&quot;</code>后(?id=1&quot;)</p>
+<p><img src="/image/sqli-lab-2~4/4198706c9fba5cd32d0299808c1620e6.png" alt="alt text"></p>
+<p>发现页面报错，观察一下报错结果:<br>
 发现确实有<code>&quot;</code>而且还有<code>)</code><br>
 于是可以初步猜想我输入的id应该是这样的:<code>(&quot;id&quot;)</code><br>
-于是就可以构造?id=1&quot;) and 1=2 --+<br>
-<img src="/image/sqli-lab-2~4/638eefe59e5c956fe96414dbb82b27d8.png" alt="alt text"><br>
-成功绕过<br>
+于是就可以构造?id=1&quot;) and 1=2 --+</p>
+<p><img src="/image/sqli-lab-2~4/638eefe59e5c956fe96414dbb82b27d8.png" alt="alt text"></p>
+<p>成功绕过<br>
 接下来步骤还是和第一题一样，把<code>'</code>改为<code>&quot;)</code>就好了<br>
-查看一下源代码<br>
-<img src="/image/sqli-lab-2~4/b28260b157fc94cd0785a9d5a015a27f.png" alt="alt text"><br>
-发现语句是这样的:<br>
+查看一下源代码</p>
+<p><img src="/image/sqli-lab-2~4/b28260b157fc94cd0785a9d5a015a27f.png" alt="alt text"></p>
+<p>发现语句是这样的:<br>
 <code>$id = '&quot;' . $id . '&quot;';</code><br>
 <code>$sql=&quot;SELECT * FROM users WHERE id=($id) LIMIT 0,1&quot;;</code><br>
 先给我输入的id加上<code>&quot;&quot;</code>号在用<code>()</code>闭合<br>
@@ -189,6 +189,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2026/09/27/sqli-lab-5~6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          sqli-lab-5~6的wp
+        
+      </div>
+    </a>
   
   
     <a href="/2026/09/25/sqli-lab-1/" id="article-nav-older" class="article-nav-link-wrap">
@@ -252,6 +261,10 @@
       <ul>
         
           <li>
+            <a href="/2026/09/27/sqli-lab-5~6/">sqli-lab-5~6的wp</a>
+          </li>
+        
+          <li>
             <a href="/2026/09/26/sqli-lab-2~4/">sqli-lab-sql2~4的wp</a>
           </li>
         
@@ -265,10 +278,6 @@
         
           <li>
             <a href="/2026/09/23/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/22/test/">记录一下一些基本的md代码</a>
           </li>
         
       </ul>
