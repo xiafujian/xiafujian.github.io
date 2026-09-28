@@ -6,12 +6,12 @@
   
   <title>sqli-lab-5~6的wp | past</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="sqli-lab-5~6  使用sqli-lab靶场  这是我完成第五,六题的wp &lt;br 第五题: 首先打开靶场，发现依旧是叫我输入id 于是构造?id&#x3D;1  发现这次不能直接显示账号密码了，猜测应该是无数据回显 这时候应该使用updatexml报错回显 接下来依旧是先构造闭合，现尝试:?id&#x3D;1&#39;  报sql错误: &#39;&#39;1&#39;&#39;LIMIT 0,1&#39; 可以发现报错的地方在1&#39; 基本可以确定输">
+  <meta name="description" content="sqli-lab-5~6  使用sqli-lab靶场  这是我完成第五,六题的wp  第五题: 首先打开靶场，发现依旧是叫我输入id 于是构造?id&#x3D;1  发现这次不能直接显示账号密码了，猜测应该是无数据回显 这时候应该使用updatexml报错回显 接下来依旧是先构造闭合，现尝试:?id&#x3D;1&#39;  报sql错误: &#39;&#39;1&#39;&#39;LIMIT 0,1&#39; 可以发现报错的地方在1&#39; 基本可以确定输入形式为:&#39;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sqli-lab-5~6的wp">
 <meta property="og:url" content="https://xiafujian.github.io/2026/09/27/sqli-lab-5~6/index.html">
 <meta property="og:site_name" content="past">
-<meta property="og:description" content="sqli-lab-5~6  使用sqli-lab靶场  这是我完成第五,六题的wp &lt;br 第五题: 首先打开靶场，发现依旧是叫我输入id 于是构造?id&#x3D;1  发现这次不能直接显示账号密码了，猜测应该是无数据回显 这时候应该使用updatexml报错回显 接下来依旧是先构造闭合，现尝试:?id&#x3D;1&#39;  报sql错误: &#39;&#39;1&#39;&#39;LIMIT 0,1&#39; 可以发现报错的地方在1&#39; 基本可以确定输">
+<meta property="og:description" content="sqli-lab-5~6  使用sqli-lab靶场  这是我完成第五,六题的wp  第五题: 首先打开靶场，发现依旧是叫我输入id 于是构造?id&#x3D;1  发现这次不能直接显示账号密码了，猜测应该是无数据回显 这时候应该使用updatexml报错回显 接下来依旧是先构造闭合，现尝试:?id&#x3D;1&#39;  报sql错误: &#39;&#39;1&#39;&#39;LIMIT 0,1&#39; 可以发现报错的地方在1&#39; 基本可以确定输入形式为:&#39;">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-5~6/25c972b6f773a11339750286166edaf7.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-5~6/4d2bd5a03d08e8b3229aa7842d10ed95.png">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-5~6/cc73748adc159a19deb97b3c434298df.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-5~6/1dc99ae2c846e9def7850dbc798da200.png">
 <meta property="article:published_time" content="2026-09-27T08:38:28.582Z">
-<meta property="article:modified_time" content="2026-09-27T10:06:29.151Z">
+<meta property="article:modified_time" content="2026-09-28T13:52:50.986Z">
 <meta property="article:author" content="past">
 <meta property="article:tag" content="SQL">
 <meta property="article:tag" content="Web">
@@ -121,7 +121,7 @@
 <li>使用sqli-lab靶场</li>
 </ul>
 <p><strong>这是我完成第五,六题的wp</strong><br>
-&lt;br<br>
+<br><br>
 <strong>第五题:</strong></p>
 <p>首先打开靶场，发现依旧是叫我输入id<br>
 于是构造?id=1</p>
@@ -196,6 +196,15 @@
     
 <nav id="article-nav">
   
+    <a href="/2026/09/28/sqli-lab-7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          sqli-lab-7的wp
+        
+      </div>
+    </a>
+  
   
     <a href="/2026/09/26/sqli-lab-2~4/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
@@ -256,6 +265,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/09/28/sqli-lab-7/">sqli-lab-7的wp</a>
+          </li>
         
           <li>
             <a href="/2026/09/27/sqli-lab-5~6/">sqli-lab-5~6的wp</a>
