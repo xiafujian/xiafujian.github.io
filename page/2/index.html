@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>past</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="past">
+<meta property="og:url" content="https://xiafujian.github.io/page/2/index.html">
+<meta property="og:site_name" content="past">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="past">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="past" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/custom.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">past</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">from past to future</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://xiafujian.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-sql1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/09/24/sql1/" class="article-date">
+  <time class="dt-published" datetime="2026-09-24T14:00:00.000Z" itemprop="datePublished">2026-09-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/09/24/sql1/">第一次sql注入的学习(portswigger)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1>Lab: SQL注入</h1>
+<ul>
+<li>使用portswigger靶场：</li>
+</ul>
+<p><strong>第一题:一个简单的get字符型SQL注入:</strong><br>
+打开靶场发现是一个购物网站<br><br><br></p>
+<p><img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg" alt=""><br><br><br></p>
+<p>这时候发现有几个可以用于分类的按钮，随便点一个:<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png" alt=""><br><br><br><br>
+可以发现只剩下被筛选的商品，但是url那里出现了<br>
+<mark>filter?category=Gifts</mark><br>
+这样一个疑是sql注入入口的网址<br>
+我们尝试在Gifts后面加上 <mark>'</mark><br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png" alt=""><br>
+发现似乎能购控制筛选结果，基本可以确定SQL入口在这里</p>
+<p>构造payload: <mark>filter?category=Gifts' OR 1=1--+</mark><br>
+(+号也可以换成空格，我这里为了更直观的展示，使用+号)<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png" alt=""><br>
+<br><br><br>
+可以发现在选择筛选结果的情况下，依旧能够显示所有的商品，这样就完成了这个靶场的要求<br>
+<br><br><br><br><br>
+<strong>第二题:登入绕过SQL注入</strong><br>
+打开靶场，没有出现筛选选项，但是注意到右上角有账号登入入口<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png" alt=""><br><br><br>
+点击后出现登入框<br><br><br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png" alt=""><br>
+从靶场提示中可以拿到一个用户名&quot;administrator&quot;<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png" alt=""><br>
+按照知识点的提示，可以知道这题需要尝试使用SQL注入实现任意密码登入<br>
+先构造  &quot;administrator'--+&quot;<br>
+可以猜想&quot; --+ &quot;可以将password前面的  ' 给注释掉，说不定能使--+后面全部内容被数据库忽略，密码判断直接失效，<br>
+直接尝试，发现成功实现无密码登入<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png" alt=""><br>
+成功完成靶场要求  😐<br>
+<br><br><br><br><br>
+在文档中还发现自己的一个知识点盲区(数据库还有分成四种)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">出现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Oracle</td>
+<td style="text-align:center">甲骨文公司的大型商业数据库，企业、老系统用得多</td>
+</tr>
+<tr>
+<td style="text-align:center">Microsoft(SQL Server)</td>
+<td style="text-align:center">Windows 服务器常用的数据库</td>
+</tr>
+<tr>
+<td style="text-align:center">PostgreSQL</td>
+<td style="text-align:center">开源强大数据库，很多现代网站、靶场会出现</td>
+</tr>
+<tr>
+<td style="text-align:center">MySQL</td>
+<td style="text-align:center">PHP+MySQL，Web 安全练习最常碰到</td>
+</tr>
+</tbody>
+</table>
+<p>四种数据库SQl注入的语法好像有所不同，还需要进一步学习</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xiafujian.github.io/2026/09/24/sql1/" data-id="cuid5xyVbbotelIBxNmJlb4wf" data-title="第一次sql注入的学习(portswigger)" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sqli-lab/">sqli-lab</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/SQL/" style="font-size: 15px;">SQL</a> <a href="/tags/SSTI/" style="font-size: 10px;">SSTI</a> <a href="/tags/Web/" style="font-size: 20px;">Web</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/10/">十月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">九月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/10/20/ccp-web-2/">ccp-web-2</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/19/ccp-web-1/">ccp-web-1</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/">鲲鹏杯web-[night_patrol]</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/13/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-EZ-EL/">鲲鹏杯web-[EZ-EL]</a>
+          </li>
+        
+          <li>
+            <a href="/2026/10/08/sqli-lab-11~16/">sqli-lab-11~16的wp</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 past<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
