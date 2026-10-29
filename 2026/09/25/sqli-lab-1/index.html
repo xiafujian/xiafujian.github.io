@@ -1,125 +1,208 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>sqli-lab-1的wp | past</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="sql-lab-1  使用sqli-lab靶场  这是我完成第一题的wp:  首先打开靶场,发现页面有提示，要去我们输入ID  初步猜想是get型的，尝试在地址栏补充&quot;?id&#x3D;1&quot;  发现页面出现登入账号和密码，修改id后面的数字，可以拿到不同的账号密码 但是我希望能进一步了解这个靶场，先测试sql注入入口 构造&quot;?id&#x3D;1&#39;&quot;  页面报sql语法错误，确定">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>sqli-lab-1的wp | past</title><meta name="author" content="past"><meta name="copyright" content="past"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="sql-lab-1  使用sqli-lab靶场  这是我完成第一题的wp:  首先打开靶场,发现页面有提示，要去我们输入ID  初步猜想是get型的，尝试在地址栏补充&quot;?id&#x3D;1&quot;  发现页面出现登入账号和密码，修改id后面的数字，可以拿到不同的账号密码 但是我希望能进一步了解这个靶场，先测试sql注入入口 构造&quot;?id&#x3D;1&#39;&quot;  页面报sql语法错误，确定">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sqli-lab-1的wp">
 <meta property="og:url" content="https://xiafujian.github.io/2026/09/25/sqli-lab-1/index.html">
 <meta property="og:site_name" content="past">
 <meta property="og:description" content="sql-lab-1  使用sqli-lab靶场  这是我完成第一题的wp:  首先打开靶场,发现页面有提示，要去我们输入ID  初步猜想是get型的，尝试在地址栏补充&quot;?id&#x3D;1&quot;  发现页面出现登入账号和密码，修改id后面的数字，可以拿到不同的账号密码 但是我希望能进一步了解这个靶场，先测试sql注入入口 构造&quot;?id&#x3D;1&#39;&quot;  页面报sql语法错误，确定">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/ffa84c2156f6cd93d3754b5f7779ff55.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/f678d848af77302fee1326d0cdb6cb92.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/d8d7b36212440c7e7ed4fe4244d7b2e8.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/c938bf44f0a3ed1dc4f74fd9d19ff294.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/01b6bd2eb91ab394986fb0172c5aa36f.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/83f395d216c5050c9c45cde82a600013.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/0e4983c85dcc2278f4adf9399f41020f.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/73ad60ddf328e9e1dfe89c0ec8a64c31.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/7a5b12879b0c7d34ded4d90813a46395.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/867b8490d18bdda4a12d2750d0253a4b.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/b79bdb0bd19e7ccea3756d69110a2e5a.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/b66d6990bec8dbc2aa95d8f8887c7db6.png">
-<meta property="og:image" content="https://xiafujian.github.io/image/sqli-lab-1/9c077044d76bb81ee48fc6e232f0ce4b.png">
+<meta property="og:image" content="https://xiafujian.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2026-09-25T12:28:46.201Z">
 <meta property="article:modified_time" content="2026-09-27T11:53:34.928Z">
 <meta property="article:author" content="past">
 <meta property="article:tag" content="SQL">
 <meta property="article:tag" content="Web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xiafujian.github.io/image/sqli-lab-1/ffa84c2156f6cd93d3754b5f7779ff55.png">
-  
-    <link rel="alternate" href="/atom.xml" title="past" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
-
-<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/custom.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">past</a>
-      </h1>
+<meta name="twitter:image" content="https://xiafujian.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "sqli-lab-1的wp",
+  "url": "https://xiafujian.github.io/2026/09/25/sqli-lab-1/",
+  "image": "https://xiafujian.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-09-25T12:28:46.201Z",
+  "dateModified": "2026-09-27T11:53:34.928Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "past",
+      "url": "https://xiafujian.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://xiafujian.github.io/2026/09/25/sqli-lab-1/index.html"><link rel="preconnect"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css?v=7.3.1"><script>
+    (() => {
       
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">from past to future</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://xiafujian.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
 
-      <div class="outer">
-        <section id="main"><article id="post-sqli-lab-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/09/25/sqli-lab-1/" class="article-date">
-  <time class="dt-published" datetime="2026-09-25T12:28:46.201Z" itemprop="datePublished">2026-09-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/sqli-lab/">sqli-lab</a>
-  </div>
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      sqli-lab-1的wp
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1>sql-lab-1</h1>
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js?v=4.13.0',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'sqli-lab-1的wp',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><link rel="stylesheet" href="/css/custom.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 博客</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/banner.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">past</span></a><a class="nav-page-title" href="/"><span class="site-name">sqli-lab-1的wp</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 博客</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">sqli-lab-1的wp</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-09-25T12:28:46.201Z" title="发表于 2026-09-25 20:28:46">2026-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/sqli-lab/">sqli-lab</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>sql-lab-1</h1>
 <ul>
 <li>使用sqli-lab靶场</li>
 </ul>
@@ -178,158 +261,4 @@
 <img src="/image/sqli-lab-1/b66d6990bec8dbc2aa95d8f8887c7db6.png" alt="alt text"><br>
 <img src="/image/sqli-lab-1/9c077044d76bb81ee48fc6e232f0ce4b.png" alt="alt text"></p>
 <p>从这个靶场中可以学到sql注入数据库的全过程，接下俩就要学怎么绕过了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://xiafujian.github.io/2026/09/25/sqli-lab-1/" data-id="cuidFs61qBKyCDv40YOOPsIsV" data-title="sqli-lab-1的wp" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2026/09/26/sqli-lab-2~4/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          sqli-lab-sql2~4的wp
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2026/09/24/sql1/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">第一次sql注入的学习(portswigger)</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CTF/">CTF</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/sqli-lab/">sqli-lab</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/SQL/" style="font-size: 15px;">SQL</a> <a href="/tags/SSTI/" style="font-size: 10px;">SSTI</a> <a href="/tags/Web/" style="font-size: 20px;">Web</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/10/">十月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/09/">九月 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/10/20/ccp-web-2/">ccp-web-2</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/19/ccp-web-1/">ccp-web-1</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/">鲲鹏杯web-[night_patrol]</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/13/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-EZ-EL/">鲲鹏杯web-[EZ-EL]</a>
-          </li>
-        
-          <li>
-            <a href="/2026/10/08/sqli-lab-11~16/">sqli-lab-11~16的wp</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2026 past<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SQL/">SQL</a><a class="post-meta__tags" href="/tags/Web/">Web</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="/pluginsSrc/butterfly-extsrc/sharejs/dist/css/share.min.css?v=1.1.6" media="print" onload="this.media='all'"><script src="/pluginsSrc/butterfly-extsrc/sharejs/dist/js/social-share.min.js?v=1.1.6" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/26/sqli-lab-2~4/" title="sqli-lab-sql2~4的wp"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">sqli-lab-sql2~4的wp</div></div><div class="info-2"><div class="info-item-1">sql-lab-2~4  使用sqli-lab靶场  这是我完成第二，三，四题的wp  第二题: 依旧是打开靶场，构造?id=1  结果显示正常，大概率和上面一题一样，是?id=后面是注入点 构造?id=1' and 1=2 --+ 查看返回  发现报错:  'and 1=2 --+  都有问题 猜想是否是因为语句外面没有 ' 号，我输入的 ' 成为了报错原因 于是尝试构造?id=1 and 1=2  发现因为1=2条件不成立而不显示结果了，所以我的猜测是正确的 去翻阅源代码  有这样的一...</div></div></div></a><a class="pagination-related" href="/2026/09/24/sql1/" title="第一次sql注入的学习(portswigger)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">第一次sql注入的学习(portswigger)</div></div><div class="info-2"><div class="info-item-1">Lab: SQL注入  使用portswigger靶场：  第一题:一个简单的get字符型SQL注入: 打开靶场发现是一个购物网站  这时候发现有几个可以用于分类的按钮，随便点一个:  可以发现只剩下被筛选的商品，但是url那里出现了 filter?category=Gifts 这样一个疑是sql注入入口的网址 我们尝试在Gifts后面加上 '  发现似乎能购控制筛选结果，基本可以确定SQL入口在这里 构造payload: filter?category=Gifts' OR 1=1--+ ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/29/sqli-lab-8~10/" title="sqli-lab-8~10的wp"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-29</div><div class="info-item-2">sqli-lab-8~10的wp</div></div><div class="info-2"><div class="info-item-1">sqli-lab-8~10  使用sqli-lab靶场  这是我完成第八,九,十题的wp  第八第九第十这三题命令都差不多，截图主要用第八题的 第九题和第十题十时间盲注，截图看不出来区别,这边只做命令讲解，不附带截图了 第八题: 打开靶场: 构造?id=1',页面报错，确定注入入口  然后我尝试了 ?id=1' and 1=1 --+ 页面输出 You are in → 闭合成功 ?id=1' and 1=2 --+ 页面空白，1=2 是假条件，页面变化，确认布尔盲注。   接下来去猜测库...</div></div></div></a><a class="pagination-related" href="/2026/09/26/sqli-lab-2~4/" title="sqli-lab-sql2~4的wp"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-26</div><div class="info-item-2">sqli-lab-sql2~4的wp</div></div><div class="info-2"><div class="info-item-1">sql-lab-2~4  使用sqli-lab靶场  这是我完成第二，三，四题的wp  第二题: 依旧是打开靶场，构造?id=1  结果显示正常，大概率和上面一题一样，是?id=后面是注入点 构造?id=1' and 1=2 --+ 查看返回  发现报错:  'and 1=2 --+  都有问题 猜想是否是因为语句外面没有 ' 号，我输入的 ' 成为了报错原因 于是尝试构造?id=1 and 1=2  发现因为1=2条件不成立而不显示结果了，所以我的猜测是正确的 去翻阅源代码  有这样的一...</div></div></div></a><a class="pagination-related" href="/2026/10/20/ccp-web-2/" title="ccp-web-2"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-20</div><div class="info-item-2">ccp-web-2</div></div><div class="info-2"><div class="info-item-1"> ccp考试中遇到的一道xxs+越权题目  本题考点：xxs,越权 首先打开靶场，发现首页有这样一句话： 开放注册。为核对富文本排版，被提交预览的工单将由内容安全岗使用原始 HTML 渲染；前台展示始终转义 这提示我要想办法上传一个js，让后台执行，进而获得flag (看到这题就感觉和之前在鲲鹏杯遇到的小灵通那题很像)  随便注册一个账号登入后，发现有个新建工单的选项: 打开后发现可以写入标题和描述，可以猜测js是否就是要写在这里   访问首先先尝试 &lt;script&gt;alert...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">past</div><div class="author-info-description">网络空间安全在读 · 渗透测试方向</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xiafujian"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/xiafujian" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">sql-lab-1</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ccp-web-2/" title="ccp-web-2">ccp-web-2</a><time datetime="2026-10-20T11:51:27.248Z" title="发表于 2026-10-20 19:51:27">2026-10-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/19/ccp-web-1/" title="ccp-web-1">ccp-web-1</a><time datetime="2026-10-19T07:01:03.914Z" title="发表于 2026-10-19 15:01:03">2026-10-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/16/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-night_patrol/" title="鲲鹏杯web-[night_patrol]">鲲鹏杯web-[night_patrol]</a><time datetime="2026-10-16T13:33:22.204Z" title="发表于 2026-10-16 21:33:22">2026-10-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-EZ-EL/" title="鲲鹏杯web-[EZ-EL]">鲲鹏杯web-[EZ-EL]</a><time datetime="2026-10-13T13:26:16.045Z" title="发表于 2026-10-13 21:26:16">2026-10-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/08/sqli-lab-11~16/" title="sqli-lab-11~16的wp">sqli-lab-11~16的wp</a><time datetime="2026-10-08T13:02:26.601Z" title="发表于 2026-10-08 21:02:26">2026-10-08</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By past</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章…" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
