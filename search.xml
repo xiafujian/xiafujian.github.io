@@ -37,81 +37,6 @@
       </tags>
   </entry>
   <entry>
-    <title>第一次sql注入的学习(portswigger)</title>
-    <url>/2026/09/24/sql1/</url>
-    <content><![CDATA[<h1>Lab: SQL注入</h1>
-<ul>
-<li>使用portswigger靶场：</li>
-</ul>
-<p><strong>第一题:一个简单的get字符型SQL注入:</strong><br>
-打开靶场发现是一个购物网站<br><br><br></p>
-<p><img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg" alt=""><br><br><br></p>
-<p>这时候发现有几个可以用于分类的按钮，随便点一个:<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png" alt=""><br><br><br><br>
-可以发现只剩下被筛选的商品，但是url那里出现了<br>
-<mark>filter?category=Gifts</mark><br>
-这样一个疑是sql注入入口的网址<br>
-我们尝试在Gifts后面加上 <mark>'</mark><br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png" alt=""><br>
-发现似乎能购控制筛选结果，基本可以确定SQL入口在这里</p>
-<p>构造payload: <mark>filter?category=Gifts' OR 1=1--+</mark><br>
-(+号也可以换成空格，我这里为了更直观的展示，使用+号)<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png" alt=""><br>
-<br><br><br>
-可以发现在选择筛选结果的情况下，依旧能够显示所有的商品，这样就完成了这个靶场的要求<br>
-<br><br><br><br><br>
-<strong>第二题:登入绕过SQL注入</strong><br>
-打开靶场，没有出现筛选选项，但是注意到右上角有账号登入入口<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png" alt=""><br><br><br>
-点击后出现登入框<br><br><br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png" alt=""><br>
-从靶场提示中可以拿到一个用户名&quot;administrator&quot;<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png" alt=""><br>
-按照知识点的提示，可以知道这题需要尝试使用SQL注入实现任意密码登入<br>
-先构造  &quot;administrator'--+&quot;<br>
-可以猜想&quot; --+ &quot;可以将password前面的  ' 给注释掉，说不定能使--+后面全部内容被数据库忽略，密码判断直接失效，<br>
-直接尝试，发现成功实现无密码登入<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png" alt=""><br>
-成功完成靶场要求  😐<br>
-<br><br><br><br><br>
-在文档中还发现自己的一个知识点盲区(数据库还有分成四种)</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">名称</th>
-<th style="text-align:center">出现</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Oracle</td>
-<td style="text-align:center">甲骨文公司的大型商业数据库，企业、老系统用得多</td>
-</tr>
-<tr>
-<td style="text-align:center">Microsoft(SQL Server)</td>
-<td style="text-align:center">Windows 服务器常用的数据库</td>
-</tr>
-<tr>
-<td style="text-align:center">PostgreSQL</td>
-<td style="text-align:center">开源强大数据库，很多现代网站、靶场会出现</td>
-</tr>
-<tr>
-<td style="text-align:center">MySQL</td>
-<td style="text-align:center">PHP+MySQL，Web 安全练习最常碰到</td>
-</tr>
-</tbody>
-</table>
-<p>四种数据库SQl注入的语法好像有所不同，还需要进一步学习</p>
-]]></content>
-      <categories>
-        <category>SQL注入</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
-        <tag>Web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ccp-web-2</title>
     <url>/2026/10/20/ccp-web-2/</url>
     <content><![CDATA[<ul>
@@ -718,6 +643,123 @@ flag:<code>NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99}</code></p>
       <tags>
         <tag>Web</tag>
         <tag>SSTI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一次sql注入的学习(portswigger)</title>
+    <url>/2026/09/24/portswigger-sql-1/</url>
+    <content><![CDATA[<h1>Lab: SQL注入</h1>
+<ul>
+<li>使用portswigger靶场：</li>
+</ul>
+<p><strong>第一题:一个简单的get字符型SQL注入:</strong><br>
+打开靶场发现是一个购物网站<br><br><br></p>
+<p><img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg" alt=""><br><br><br></p>
+<p>这时候发现有几个可以用于分类的按钮，随便点一个:<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png" alt=""><br><br><br><br>
+可以发现只剩下被筛选的商品，但是url那里出现了<br>
+<mark>filter?category=Gifts</mark><br>
+这样一个疑是sql注入入口的网址<br>
+我们尝试在Gifts后面加上 <mark>'</mark><br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png" alt=""><br>
+发现似乎能购控制筛选结果，基本可以确定SQL入口在这里</p>
+<p>构造payload: <mark>filter?category=Gifts' OR 1=1--+</mark><br>
+(+号也可以换成空格，我这里为了更直观的展示，使用+号)<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png" alt=""><br>
+<br><br><br>
+可以发现在选择筛选结果的情况下，依旧能够显示所有的商品，这样就完成了这个靶场的要求<br>
+<br><br><br><br><br>
+<strong>第二题:登入绕过SQL注入</strong><br>
+打开靶场，没有出现筛选选项，但是注意到右上角有账号登入入口<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png" alt=""><br><br><br>
+点击后出现登入框<br><br><br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png" alt=""><br>
+从靶场提示中可以拿到一个用户名&quot;administrator&quot;<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png" alt=""><br>
+按照知识点的提示，可以知道这题需要尝试使用SQL注入实现任意密码登入<br>
+先构造  &quot;administrator'--+&quot;<br>
+可以猜想&quot; --+ &quot;可以将password前面的  ' 给注释掉，说不定能使--+后面全部内容被数据库忽略，密码判断直接失效，<br>
+直接尝试，发现成功实现无密码登入<br>
+<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png" alt=""><br>
+成功完成靶场要求  😐<br>
+<br><br><br><br><br>
+在文档中还发现自己的一个知识点盲区(数据库还有分成四种)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">出现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Oracle</td>
+<td style="text-align:center">甲骨文公司的大型商业数据库，企业、老系统用得多</td>
+</tr>
+<tr>
+<td style="text-align:center">Microsoft(SQL Server)</td>
+<td style="text-align:center">Windows 服务器常用的数据库</td>
+</tr>
+<tr>
+<td style="text-align:center">PostgreSQL</td>
+<td style="text-align:center">开源强大数据库，很多现代网站、靶场会出现</td>
+</tr>
+<tr>
+<td style="text-align:center">MySQL</td>
+<td style="text-align:center">PHP+MySQL，Web 安全练习最常碰到</td>
+</tr>
+</tbody>
+</table>
+<p>四种数据库SQl注入的语法好像有所不同，还需要进一步学习</p>
+]]></content>
+      <categories>
+        <category>SQL注入</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>第一次sql注入的学习(portswigger)</title>
+    <url>/2026/09/24/portswigger-sql-2/</url>
+    <content><![CDATA[<h1>Lab: SQL注入</h1>
+<ul>
+<li>使用portswigger靶场：</li>
+</ul>
+<p>之前使用的sql-lab靶场全部都是MYSQL的数据库,但是不同数据库注入语法有所不同，这篇是oracle数据库的sql注入</p>
+<p>打开靶场，在页面中随便点一点后，发现点击商品分类后，地址栏出现<code>?category=</code>,这时候就可以判断这是get型的注入</p>
+<p><img src="/image/portswigger-sql-2/1.png" alt="alt text"></p>
+<p><img src="/image/portswigger-sql-2/2.png" alt="alt text"></p>
+<p>尝试了一些基本的闭合方式，最后确认是<code>'</code>闭合<br>
+于是构造<code>?category='</code><br>
+发现出现空白页面，以及回显了一些奇怪的字符</p>
+<p><img src="/image/portswigger-sql-2/3.png" alt="alt text"></p>
+<p>首先先确定列数<br>
+构造<code>?categoty=' order by 1--</code><br>
+<code>?categoty=' order by 2--</code><br>
+<code>?categoty=' order by 3--</code><br>
+发现<code>3</code>的时候页面空白报错，可以确定此题是两列</p>
+<p><img src="/image/portswigger-sql-2/4.png" alt="alt text"><br>
+<img src="/image/portswigger-sql-2/5.png" alt="alt text"></p>
+<p>还有一种方法是构造<code>?categoty=' union select 'abc','abc' from dual--</code><br>
+发现页面返回两列，也可以确定</p>
+<p><strong>注：Oracle 必须写 FROM dual！这是 Oracle 和 MySQL 最大区别<br>
+Oracle 每一条 SELECT <strong>必须带 FROM</strong>，不能直接 <code>select null</code>，要用伪表 <code>dual</code></strong></p>
+<p><img src="/image/portswigger-sql-2/6.png" alt="alt text"></p>
+<p>最后构造<code>?category=' union select banner,null from v$version--</code><br>
+成功获得版本号，靶场也提示注入成功</p>
+<p><img src="/image/portswigger-sql-2/7.png" alt="alt text"></p>
+<p>最后有一点我没遇到的：<br>
+<code>UNION</code> 要求<strong>对应位置的数据类型兼容</strong>：数字列放字符串会报错，字符串列放文本才正常。<br>
+我最开始使用的就是字符串，这一题也恰好支持字符串</p>
+]]></content>
+      <categories>
+        <category>SQL注入</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
 </search>
