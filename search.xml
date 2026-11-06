@@ -721,8 +721,8 @@ flag:<code>NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99}</code></p>
       </tags>
   </entry>
   <entry>
-    <title>第一次sql注入的学习(portswigger)</title>
-    <url>/2026/09/24/portswigger-sql-2/</url>
+    <title>portswigger</title>
+    <url>/2026/11/06/portswigger-sql-2/</url>
     <content><![CDATA[<h1>Lab: SQL注入</h1>
 <ul>
 <li>使用portswigger靶场：</li>
